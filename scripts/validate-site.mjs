@@ -1,5 +1,6 @@
 import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import { getBuildTime, isPostPublished } from "../lib/publishing.mjs";
 
 const root = process.cwd();
 const dist = path.join(root, "dist");
@@ -48,11 +49,19 @@ function metaContent(html, attribute, value) {
 }
 
 const sourcePosts = (await readdir(postSource)).filter((name) => name.endsWith(".md"));
-if (sourcePosts.length !== 10) fail(`10 makale bekleniyordu, ${sourcePosts.length} bulundu.`);
+if (sourcePosts.length !== 11) fail(`11 makale bekleniyordu, ${sourcePosts.length} bulundu.`);
+const buildTime = getBuildTime();
+const publishedSources = [];
+for (const name of sourcePosts) {
+  const source = await readFile(path.join(postSource, name), "utf8");
+  const date = source.match(/^date:\s*["']?([^\s"']+)/m)?.[1];
+  const draft = source.match(/^draft:\s*(true|false)/m)?.[1] === "true";
+  if (isPostPublished({ date, draft }, buildTime)) publishedSources.push(name);
+}
 
 const htmlFiles = (await walk(dist)).filter((file) => file.endsWith(".html"));
 const postHtmlFiles = htmlFiles.filter((file) => file.includes(`${path.sep}blog${path.sep}`) && file !== path.join(dist, "blog", "index.html"));
-if (postHtmlFiles.length !== 10) fail(`Derlemede 10 makale sayfası bekleniyordu, ${postHtmlFiles.length} bulundu.`);
+if (postHtmlFiles.length !== publishedSources.length) fail(`Derlemede ${publishedSources.length} yayınlanmış makale sayfası bekleniyordu, ${postHtmlFiles.length} bulundu.`);
 
 const expectedUrls = new Set(["https://linamacros.com.tr/", "https://linamacros.com.tr/blog/"]);
 
@@ -136,7 +145,8 @@ const sitemapUrls = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m
 for (const url of expectedUrls) {
   if (!sitemapUrls.has(url)) fail(`Sitemap URL eksik: ${url}`);
 }
-if (sitemapUrls.size !== 13) fail(`Sitemap 13 URL içermeli, ${sitemapUrls.size} içeriyor.`);
+const expectedSitemapSize = publishedSources.length + 3;
+if (sitemapUrls.size !== expectedSitemapSize) fail(`Sitemap ${expectedSitemapSize} URL içermeli, ${sitemapUrls.size} içeriyor.`);
 
 const robots = await readFile(path.join(dist, "robots.txt"), "utf8");
 if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || !robots.includes("Sitemap: https://linamacros.com.tr/sitemap.xml")) {
@@ -177,4 +187,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Doğrulama başarılı: ${postHtmlFiles.length} makale, ${htmlFiles.length} HTML sayfası, 13 sitemap URL'si ve tüm SEO/Shopier/GA4-rıza/favicon kontrolleri geçti.`);
+console.log(`Doğrulama başarılı: ${sourcePosts.length} kaynak makalenin ${publishedSources.length} adedi yayında; ${htmlFiles.length} HTML sayfası, ${expectedSitemapSize} sitemap URL'si ve tüm SEO/Shopier/GA4-rıza/favicon kontrolleri geçti.`);

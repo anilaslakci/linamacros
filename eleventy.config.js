@@ -1,4 +1,7 @@
+import { getBuildTime, isPostPublished } from "./lib/publishing.mjs";
+
 export default function (eleventyConfig) {
+  const buildTime = getBuildTime();
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy("src/CNAME");
   eleventyConfig.addPassthroughCopy("src/favicon.ico");
@@ -21,7 +24,7 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addCollection("posts", (collectionApi) => collectionApi
     .getFilteredByGlob("src/blog/posts/*.md")
-    .filter((item) => !item.data.draft)
+    .filter((item) => isPostPublished(item.data, buildTime))
     .sort((a, b) => b.date - a.date));
 
   return {

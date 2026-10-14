@@ -1,9 +1,13 @@
 name: Build, test and deploy GitHub Pages
+run-name: Pages deploy • ${{ github.event_name }} • ${{ github.ref_name }}
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Türkiye yıl boyunca UTC+3 kullanır; 06:00 UTC = 09:00 Europe/Istanbul.
+    - cron: "0 6 * * *"
 
 permissions:
   contents: read
@@ -17,6 +21,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,14 +42,33 @@ jobs:
           path: dist
       - name: Upload source maps disabled
         run: test ! -e dist/.git
+      - name: Build failure summary
+        if: failure()
+        run: |
+          echo "## ❌ Lina Macros derleme veya doğrulama hatası" >> "$GITHUB_STEP_SUMMARY"
+          echo "Tetikleyici: \`${{ github.event_name }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "İleri tarihli yazılar canlıya alınmadı. Ayrıntılar için başarısız adıma bakın." >> "$GITHUB_STEP_SUMMARY"
 
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Deployment failure summary
+        if: failure()
+        run: |
+          echo "## ❌ GitHub Pages yayın hatası" >> "$GITHUB_STEP_SUMMARY"
+          echo "Derleme tamamlandı ancak Pages dağıtımı başarısız oldu. Bu çalışmayı yeniden deneyin." >> "$GITHUB_STEP_SUMMARY"
+      - name: Deployment summary
+        if: success()
+        run: |
+          echo "## ✅ Lina Macros yayını tamamlandı" >> "$GITHUB_STEP_SUMMARY"
+          echo "Tetikleyici: \`${{ github.event_name }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "İstanbul tarihi: \`$(TZ=Europe/Istanbul date +%F)\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "Canlı adres: ${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"

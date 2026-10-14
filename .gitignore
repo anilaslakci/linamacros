@@ -1,4 +1,5 @@
 node_modules/
 dist/
+.tmp-scheduled-publishing/
 .DS_Store
 *.log
