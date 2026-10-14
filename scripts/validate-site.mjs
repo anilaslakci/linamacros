@@ -70,6 +70,10 @@ for (const file of htmlFiles) {
   if (!metaContent(html, "property", "og:description")) fail(`${relative}: og:description eksik.`);
   if (!metaContent(html, "property", "og:image")) fail(`${relative}: og:image eksik.`);
   if (!attr(html, "meta", "name", "description")) fail(`${relative}: meta description eksik.`);
+  if ((html.match(/\/assets\/js\/consent-analytics\.js/g) ?? []).length !== 1) fail(`${relative}: ortak Analytics rıza betiği tam bir kez yüklenmeli.`);
+  if ((html.match(/window\.LINA_ANALYTICS_ID\s*=\s*"G-SBGM63WMGG"/g) ?? []).length !== 1) fail(`${relative}: GA4 yapılandırması tam bir kez bulunmalı.`);
+  if (!html.includes("data-consent-accept") || !html.includes("data-consent-reject")) fail(`${relative}: analitik rıza seçenekleri eksik.`);
+  if (html.includes("googletagmanager.com/gtag/js")) fail(`${relative}: GA4 etiketi rıza öncesinde statik olarak yüklenmemeli.`);
 
   const localLinks = [...html.matchAll(/href=["'](\/[^"'#?]*)(?:[?#][^"']*)?["']/g)].map((match) => match[1]);
   for (const href of localLinks) {
@@ -115,13 +119,24 @@ const shopierUrls = [
 for (const url of shopierUrls) {
   if (!home.includes(`href="${url}"`)) fail(`Ana sayfada Shopier bağlantısı korunmadı: ${url}`);
 }
+if ((home.match(/data-shopier-product=/g) ?? []).length !== 4 || (home.match(/data-shopier-game=/g) ?? []).length !== 4) {
+  fail("Dört Shopier satın alma düğmesinin ürün ve oyun ölçüm bilgileri eksik.");
+}
+
+const analyticsScript = await readFile(path.join(dist, "assets", "js", "consent-analytics.js"), "utf8");
+for (const marker of ["click_shopier", "click_outbound", "product_name", "game", "destination_url", "analytics_storage", "lina_analytics_consent_v1"]) {
+  if (!analyticsScript.includes(marker)) fail(`Analytics betiğinde ${marker} eksik.`);
+}
+if (!analyticsScript.includes('document.createElement("script")') || !analyticsScript.includes("googletagmanager.com/gtag/js")) {
+  fail("GA4 etiketi rıza sonrasında dinamik yüklenmiyor.");
+}
 
 const sitemap = await readFile(path.join(dist, "sitemap.xml"), "utf8");
 const sitemapUrls = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]));
 for (const url of expectedUrls) {
   if (!sitemapUrls.has(url)) fail(`Sitemap URL eksik: ${url}`);
 }
-if (sitemapUrls.size !== 12) fail(`Sitemap 12 URL içermeli, ${sitemapUrls.size} içeriyor.`);
+if (sitemapUrls.size !== 13) fail(`Sitemap 13 URL içermeli, ${sitemapUrls.size} içeriyor.`);
 
 const robots = await readFile(path.join(dist, "robots.txt"), "utf8");
 if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || !robots.includes("Sitemap: https://linamacros.com.tr/sitemap.xml")) {
@@ -162,4 +177,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Doğrulama başarılı: ${postHtmlFiles.length} makale, ${htmlFiles.length} HTML sayfası, 12 sitemap URL'si ve tüm SEO/Shopier/favicon kontrolleri geçti.`);
+console.log(`Doğrulama başarılı: ${postHtmlFiles.length} makale, ${htmlFiles.length} HTML sayfası, 13 sitemap URL'si ve tüm SEO/Shopier/GA4-rıza/favicon kontrolleri geçti.`);

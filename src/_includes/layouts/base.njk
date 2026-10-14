@@ -63,6 +63,18 @@
     {{ content | safe }}
     {% include "partials/footer.njk" %}
   </div>
+  <aside class="consent-banner" data-consent-banner hidden aria-labelledby="consent-title">
+    <div class="consent-copy">
+      <h2 id="consent-title">Analitik çerez tercihi</h2>
+      <p>Site kullanımını anlayıp iyileştirebilmek için Google Analytics kullanmak istiyoruz. Onay vermediğiniz sürece Analytics yüklenmez ve analitik çerez oluşturulmaz. <a href="/cerez-politikasi/">Ayrıntıları inceleyin</a>.</p>
+    </div>
+    <div class="consent-actions">
+      <button class="consent-button" type="button" data-consent-reject>Reddet</button>
+      <button class="consent-button" type="button" data-consent-accept>Kabul et</button>
+    </div>
+  </aside>
+  <script>window.LINA_ANALYTICS_ID = {{ site.analyticsMeasurementId | dump | safe }};</script>
+  <script src="/assets/js/consent-analytics.js" defer></script>
   <script src="/assets/js/script.js" defer></script>
 </body>
 </html>
