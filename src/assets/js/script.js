@@ -36,11 +36,18 @@ if (prefersReducedMotion) {
 
 const menuBtn=document.querySelector('.menu-btn');
 const mobileNav=document.querySelector('.mobile-nav');
+const siteHeader=document.querySelector('.site-header');
+const syncHeaderState=()=>siteHeader?.classList.toggle('is-scrolled',window.scrollY>8);
+syncHeaderState();
+window.addEventListener('scroll',syncHeaderState,{passive:true});
 menuBtn?.addEventListener('click',()=>{
   const open=mobileNav.classList.toggle('open');
   menuBtn.setAttribute('aria-expanded',String(open));
 });
-mobileNav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileNav.classList.remove('open')));
+mobileNav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  mobileNav.classList.remove('open');
+  menuBtn?.setAttribute('aria-expanded','false');
+}));
 
 const card=document.getElementById('controlCard');
 if(card && !prefersReducedMotion){

@@ -167,3 +167,40 @@ body.ticker-ready .ticker-track{animation-play-state:running}
   .hero-seq,.hero-panel-seq,.ticker-wrap{opacity:1;filter:none;transform:none;animation:none!important;transition:none!important}
   .ticker-track{animation:none!important}
 }
+
+/* Sticky navigation: overflow:clip does not create a scrolling ancestor. */
+html{scroll-padding-top:96px}
+.page-shell{overflow:clip}
+.site-header{z-index:100;min-height:76px;transition:box-shadow .25s ease,border-color .25s ease;background-color .25s ease}
+.site-header.is-scrolled{border-bottom-color:rgba(81,216,202,.16);box-shadow:0 12px 34px rgba(0,0,0,.28)}
+
+/* Brand introduction and trust section. */
+.brand-trust{position:relative;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);overflow:hidden}
+.brand-trust:before{content:"";position:absolute;inset:auto -12% -55% 42%;height:560px;background:radial-gradient(circle,rgba(49,199,186,.12),transparent 68%);pointer-events:none}
+.brand-trust-grid{position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:90px;align-items:center}
+.brand-trust-copy h2{max-width:760px;margin:20px 0 28px;font:700 clamp(38px,4.2vw,56px)/1.02 "Space Grotesk";letter-spacing:-2.2px}
+.brand-trust-text{max-width:720px;color:var(--muted);font-size:17px;line-height:1.72}
+.brand-trust-text p{margin:0 0 17px}
+.brand-trust-slogan{margin:30px 0 22px;padding-left:17px;border-left:2px solid var(--accent);color:#f2f8f8;font:600 18px/1.4 "Space Grotesk"}
+.brand-trust-tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.brand-trust-tags span{padding:9px 13px;border:1px solid #24534f;border-radius:999px;background:rgba(14,42,43,.72);color:#bdebe6;font-size:13px;font-weight:600}
+.brand-trust-tags span:before{content:"✓";margin-right:7px;color:var(--accent)}
+.brand-trust-cta{padding:16px 24px}
+.brand-trust-panel{min-height:390px;padding:42px;border:1px solid #1c4147;border-radius:20px;background:linear-gradient(145deg,rgba(14,30,36,.98),rgba(6,17,21,.98));box-shadow:0 28px 80px rgba(0,0,0,.28);display:flex;flex-direction:column;justify-content:space-between}
+.brand-trust-emblem{display:flex;align-items:center;gap:18px}.brand-trust-emblem .brand-mark{width:58px;height:58px;font-size:28px;border-radius:14px}.brand-trust-emblem strong{font:700 24px/1.02 "Space Grotesk";letter-spacing:1px}
+.brand-trust-lines{display:grid;gap:13px}.brand-trust-lines i{display:block;height:1px;background:linear-gradient(90deg,#44d6c8,transparent)}.brand-trust-lines i:nth-child(2){width:78%}.brand-trust-lines i:nth-child(3){width:55%}
+.brand-trust-panel>p{margin:0;color:#6f8d94;font:700 11px/1.7 "Space Grotesk";letter-spacing:3px}
+.brand-trust-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.brand-trust-stats article{padding:25px;border:1px solid #24534f;border-radius:14px;background:#0a181d}.brand-trust-stats strong{display:block;color:var(--accent);font:700 34px "Space Grotesk"}.brand-trust-stats span,.brand-trust-stats small{display:block;margin-top:5px;color:#c3d2d5}.brand-trust-stats article:nth-child(2) span{color:#58dacd;letter-spacing:3px}
+
+@media(max-width:900px){
+  .brand-trust-grid{grid-template-columns:1fr;gap:48px}
+  .brand-trust-panel{min-height:280px}
+}
+@media(max-width:620px){
+  html{scroll-padding-top:82px}
+  .site-header{min-height:66px}
+  .brand-trust-copy h2{font-size:38px;letter-spacing:-1.5px}
+  .brand-trust-text{font-size:16px}
+  .brand-trust-panel{min-height:240px;padding:28px}
+  .brand-trust-stats{grid-template-columns:1fr}
+}

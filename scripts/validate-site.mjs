@@ -83,6 +83,7 @@ for (const file of htmlFiles) {
   if ((html.match(/window\.LINA_ANALYTICS_ID\s*=\s*"G-SBGM63WMGG"/g) ?? []).length !== 1) fail(`${relative}: GA4 yapılandırması tam bir kez bulunmalı.`);
   if (!html.includes("data-consent-accept") || !html.includes("data-consent-reject")) fail(`${relative}: analitik rıza seçenekleri eksik.`);
   if (html.includes("googletagmanager.com/gtag/js")) fail(`${relative}: GA4 etiketi rıza öncesinde statik olarak yüklenmemeli.`);
+  if ((html.match(/class="site-header"/g) ?? []).length !== 1) fail(`${relative}: ortak sticky üst menü eksik veya tekrarlanmış.`);
 
   const localLinks = [...html.matchAll(/href=["'](\/[^"'#?]*)(?:[?#][^"']*)?["']/g)].map((match) => match[1]);
   for (const href of localLinks) {
@@ -131,6 +132,22 @@ for (const url of shopierUrls) {
 if ((home.match(/data-shopier-product=/g) ?? []).length !== 4 || (home.match(/data-shopier-game=/g) ?? []).length !== 4) {
   fail("Dört Shopier satın alma düğmesinin ürün ve oyun ölçüm bilgileri eksik.");
 }
+const faqIndex = home.indexOf('id="sss"');
+const brandTrustIndex = home.indexOf('class="section brand-trust');
+const homeBlogIndex = home.indexOf('class="section section-grid home-blog');
+if (!(faqIndex >= 0 && brandTrustIndex > faqIndex && homeBlogIndex > brandTrustIndex)) fail("Marka güven bölümü S.S.S. sonrasında ve blog öncesinde değil.");
+for (const text of ["Oyunu Biliyoruz, Oyuncuyu Anlıyoruz.", "Bloody Mouse Uyumlu", "Türkçe Kurulum", "Telegram Destek", "Uygun Fiyat"]) {
+  if (!home.includes(text)) fail(`Marka güven bölümünde metin eksik: ${text}`);
+}
+if (!home.includes('class="btn btn-primary brand-trust-cta" href="#urunler"')) fail("Marka güven bölümü CTA bağlantısı ürünlere gitmiyor.");
+if (home.includes("3.000+ Kullanıcı") || home.includes("4,8/5 Kullanıcı Memnuniyeti")) fail("Doğrulanmamış istatistikler canlı HTML içinde görünmemeli.");
+
+const siteCss = await readFile(path.join(dist, "assets", "css", "styles.css"), "utf8");
+if (!siteCss.includes(".site-header.is-scrolled") || !siteCss.includes("scroll-padding-top") || !siteCss.includes(".page-shell{overflow:clip}")) {
+  fail("Sticky menü, anchor boşluğu veya kapsayıcı overflow düzeltmesi eksik.");
+}
+const siteScript = await readFile(path.join(dist, "assets", "js", "script.js"), "utf8");
+if (!siteScript.includes("is-scrolled") || !siteScript.includes("aria-expanded','false")) fail("Sticky menü durumu veya mobil menü kapanış senkronu eksik.");
 
 const analyticsScript = await readFile(path.join(dist, "assets", "js", "consent-analytics.js"), "utf8");
 for (const marker of ["click_shopier", "click_outbound", "product_name", "game", "destination_url", "analytics_storage", "lina_analytics_consent_v1"]) {
