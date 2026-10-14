@@ -135,12 +135,15 @@ if ((home.match(/data-shopier-product=/g) ?? []).length !== 4 || (home.match(/da
 const faqIndex = home.indexOf('id="sss"');
 const brandTrustIndex = home.indexOf('class="section brand-trust');
 const homeBlogIndex = home.indexOf('class="section section-grid home-blog');
-if (!(faqIndex >= 0 && brandTrustIndex > faqIndex && homeBlogIndex > brandTrustIndex)) fail("Marka güven bölümü S.S.S. sonrasında ve blog öncesinde değil.");
+if (!(brandTrustIndex >= 0 && faqIndex > brandTrustIndex && homeBlogIndex > faqIndex)) fail("Bölüm sırası Marka Güven → S.S.S. → Blog şeklinde değil.");
 for (const text of ["Oyunu Biliyoruz, Oyuncuyu Anlıyoruz.", "Bloody Mouse Uyumlu", "Türkçe Kurulum", "Telegram Destek", "Uygun Fiyat"]) {
   if (!home.includes(text)) fail(`Marka güven bölümünde metin eksik: ${text}`);
 }
 if (!home.includes('class="btn btn-primary brand-trust-cta" href="#urunler"')) fail("Marka güven bölümü CTA bağlantısı ürünlere gitmiyor.");
 if (home.includes("3.000+ Kullanıcı") || home.includes("4,8/5 Kullanıcı Memnuniyeti")) fail("Doğrulanmamış istatistikler canlı HTML içinde görünmemeli.");
+if (home.includes("Oyununa Uygun <span>Paketi</span>") || home.includes("Paketi seç, Shopier üzerinden satın al ve kullanmaya başla.")) {
+  fail("Kaldırılan son paket CTA bölümü hâlâ ana sayfada bulunuyor.");
+}
 
 const siteCss = await readFile(path.join(dist, "assets", "css", "styles.css"), "utf8");
 if (!siteCss.includes(".site-header.is-scrolled") || !siteCss.includes("scroll-padding-top") || !siteCss.includes(".page-shell{overflow:clip}")) {
