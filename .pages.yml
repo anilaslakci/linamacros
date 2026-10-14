@@ -1,0 +1,95 @@
+media:
+  input: src/assets/images/blog
+  output: /assets/images/blog
+  rename: safe
+  extensions: [png, jpg, jpeg, webp, avif]
+
+settings:
+  content:
+    merge: true
+  commit:
+    identity: user
+    templates:
+      create: "content(blog): {filename} eklendi"
+      update: "content(blog): {filename} güncellendi"
+      delete: "content(blog): {filename} silindi"
+      rename: "content(blog): {oldFilename} -> {newFilename}"
+
+content:
+  - name: posts
+    label: Blog Yazıları
+    type: collection
+    path: src/blog/posts
+    format: yaml-frontmatter
+    exclude: [posts.11tydata.json]
+    filename:
+      template: "{primary}.md"
+      field: create
+    subfolders: false
+    operations:
+      delete: false
+      rename: false
+    view:
+      fields: [title, category, date, updated]
+      primary: title
+      sort: [date, updated, title]
+      search: [title, description, category, tags]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Başlık
+        type: string
+        required: true
+        description: Arama sonucunda ve makalenin üstünde görünen ana başlık.
+        options:
+          minlength: 20
+          maxlength: 70
+      - name: description
+        label: Meta açıklaması
+        type: text
+        required: true
+        description: Arama sonuçları ve sosyal paylaşım için 120-160 karakterlik özgün özet.
+        options:
+          minlength: 120
+          maxlength: 160
+      - name: date
+        label: Yayın tarihi
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: updated
+        label: Güncelleme tarihi
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: category
+        label: Kategori
+        type: select
+        required: true
+        options:
+          values: [PUBG, Valorant, CS2, Oyun Rehberi, Teknik Rehber]
+      - name: readingTime
+        label: Tahmini okuma süresi
+        type: number
+        required: true
+        description: Dakika cinsinden tam sayı.
+        options:
+          min: 2
+          max: 30
+      - name: tags
+        label: Anahtar konular
+        type: string
+        list: true
+        required: true
+      - name: body
+        label: Makale içeriği
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          media: false
+          switcher: true

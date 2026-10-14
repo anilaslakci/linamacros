@@ -1,0 +1,36 @@
+---
+layout: layouts/base.njk
+bodyClass: blog-page
+---
+<main id="top">
+  <article class="article-shell section-grid">
+    <div class="container article-container">
+      <nav class="breadcrumbs" aria-label="Sayfa yolu">
+        <a href="/">Ana Sayfa</a><span>/</span><a href="/blog/">Blog</a><span>/</span><span aria-current="page">{{ title }}</span>
+      </nav>
+      <header class="article-header">
+        <div class="kicker">{{ category }}</div>
+        <h1>{{ title }}</h1>
+        <p class="article-lead">{{ description }}</p>
+        <div class="article-meta"><time datetime="{{ date | htmlDate }}">{{ date | readableDate }}</time><span>•</span><span>{{ readingTime }} dk okuma</span></div>
+      </header>
+      <div class="article-layout">
+        <div class="article-content">
+          {{ content | safe }}
+        </div>
+        <aside class="article-aside" aria-label="İlgili bağlantılar">
+          <div class="aside-card">
+            <span class="micro">LINA MACROS</span>
+            <h2>Oyununa uygun paketi incele</h2>
+            <p>Kurulum rehberi ve güncelleme desteğiyle sunulan paketleri karşılaştır.</p>
+            <a class="btn btn-primary full" href="/#urunler">Paketleri İncele</a>
+          </div>
+          <div class="aside-links">
+            <h2>İlgili rehberler</h2>
+            {% for item in collections.posts | relatedPosts(page.url) %}<a href="{{ item.url }}">{{ item.data.title }}</a>{% endfor %}
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+</main>

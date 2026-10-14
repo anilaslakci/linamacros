@@ -1,0 +1,150 @@
+---
+layout: layouts/base.njk
+title: PUBG, Valorant ve CS2 Makro Paketleri
+description: PUBG, PUBG Mobile, Valorant ve CS2 için kolay kurulumlu makro paketleri, güncelleme desteği ve özgün oyuncu rehberleri.
+permalink: /
+---
+    <main id="top">
+      <section class="hero section-grid">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow hero-seq" style="--seq:0">◉ PUBG <i>•</i> PUBG MOBILE <i>•</i> VALORANT <i>•</i> CS2</div>
+            <h1 class="hero-seq" style="--seq:1">Oyun Kontrolünü<br><span>Kendi Tarzına</span><br>Göre Ayarla.</h1>
+            <p class="hero-seq" style="--seq:2">Favori oyunların için hazırlanmış, kurulumu kolay ve özelleştirilebilir makro paketleri.</p>
+            <a class="btn btn-primary hero-btn hero-seq" style="--seq:3" href="#urunler">Paketleri İncele <span>↓</span></a>
+            <div class="trust-row hero-seq" style="--seq:4">
+              <span>ϟ Kolay Kurulum</span>
+              <span>☷ Adım Adım Rehber</span>
+              <span>↻ Güncelleme Desteği</span>
+            </div>
+          </div>
+
+          <div class="control-wrap hero-panel-seq" aria-label="Lina Control Panel görseli">
+            <div class="discount-tag">%70'E KADAR İNDİRİM</div>
+            <div class="control-card" id="controlCard">
+              <div class="control-top"><span><b class="dots">●●●</b> LINA CONTROL PANEL</span><span class="status">● AKTİF</span></div>
+              <div class="control-body">
+                <div class="controls">
+                  <label>DÜŞEY AYAR <strong>62%</strong></label>
+                  <div class="slider"><span style="width:62%"></span></div>
+                  <label>YATAY AYAR <strong>34%</strong></label>
+                  <div class="slider"><span style="width:34%"></span></div>
+                  <div class="keys"><b>W</b><b>A</b><b>S</b><b>D</b></div>
+                  <div class="toggle-row">MAKRO <i class="toggle on"></i></div>
+                  <div class="toggle-row muted">PROFİL EŞLEŞTİRME <i class="toggle"></i></div>
+                </div>
+                <div class="path-panel">
+                  <svg viewBox="0 0 260 210" role="img" aria-label="İmleç yolu">
+                    <defs><filter id="glow"><feGaussianBlur stdDeviation="2.5" result="c"/><feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+                    <g class="grid-lines"></g>
+                    <path class="path path-a" d="M16 58 C55 70, 74 64, 104 75 S157 107, 186 92 S211 77, 231 86" />
+                    <path class="path path-b" d="M16 166 C59 148, 84 120, 115 119 S168 116, 194 96 S215 79, 231 86" />
+                    <g class="cursor-target" transform="translate(231,86)"><circle r="18"/><circle r="4"/><path d="M-26 0H26M0-26V26"/></g>
+                    <circle class="pulse p1" cx="103" cy="75" r="4"/><rect class="node n1" x="62" y="63" width="7" height="7"/><rect class="node n2" x="88" y="125" width="7" height="7"/>
+                  </svg>
+                  <span>İMLEÇ YOLLARI</span>
+                </div>
+              </div>
+              <div class="control-foot"><span>PROFİL: <b>PUBG</b></span><span>MAKRO HAZIR</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ticker-wrap" aria-label="Lina Macros özellikleri">
+        <div class="ticker-track">
+          <span>GÜNCELLEME DESTEĞİ</span><b>◆</b><span>SATIŞ SONRASI DESTEK</span><b>◆</b><span>PUBG STEAM</span><b>◆</b><span>PUBG MOBILE</span><b>◆</b><span>VALORANT</span><b>◆</b><span>CS2</span><b>◆</b><span>KOLAY KURULUM</span><b>◆</b><span>ADIM ADIM REHBER</span><b>◆</b>
+          <span>GÜNCELLEME DESTEĞİ</span><b>◆</b><span>SATIŞ SONRASI DESTEK</span><b>◆</b><span>PUBG STEAM</span><b>◆</b><span>PUBG MOBILE</span><b>◆</b><span>VALORANT</span><b>◆</b><span>CS2</span><b>◆</b><span>KOLAY KURULUM</span><b>◆</b><span>ADIM ADIM REHBER</span><b>◆</b>
+        </div>
+      </section>
+
+      <section class="brand-strip reveal">
+        <div class="container center-copy">
+          <div class="micro">LINA MACROS</div>
+          <h2>Karmaşık ayarlarla uğraşmadan, ihtiyacın olan paketi seç ve kullanmaya başla.</h2>
+        </div>
+      </section>
+
+      <section class="section section-grid home-blog" aria-labelledby="home-blog-title">
+        <div class="container">
+          <div class="section-head reveal">
+            <div class="kicker">OYUNCU REHBERLERİ</div>
+            <h2 id="home-blog-title">Ayarını Bilerek Yap. Oyunu Daha İyi Oku.</h2>
+            <p>PUBG, Valorant ve CS2 için ölçülebilir ayar, nişan ve performans rehberleri.</p>
+          </div>
+          <div class="blog-card-grid">
+            {% for post in collections.posts %}{% if loop.index <= 3 %}
+            <article class="blog-card reveal">
+              <div class="blog-card-meta"><span>{{ post.data.category }}</span><time datetime="{{ post.date | htmlDate }}">{{ post.date | readableDate }}</time></div>
+              <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
+              <p>{{ post.data.description }}</p>
+              <a class="text-link" href="{{ post.url }}">Rehberi oku <span>→</span></a>
+            </article>
+            {% endif %}{% endfor %}
+          </div>
+          <div class="blog-all reveal"><a class="btn btn-secondary" href="/blog/">Tüm Rehberleri Gör</a></div>
+        </div>
+      </section>
+
+      <section class="section products section-grid" id="urunler">
+        <div class="container">
+          <div class="section-head reveal">
+            <div class="kicker">PAKETLER</div>
+            <h2>Oyununu Seç. Paketini Belirle.</h2>
+            <p>Her oyun için ayrı hazırlanmış paketlerden sana uygun olanı seç.</p>
+          </div>
+          <div class="product-grid">
+            <article class="product-card reveal"><div class="product-top"><span>●●● PUBG STEAM</span><em>%50 İndirim</em></div><h3>31in1 PUBG Steam<br>Makro Paketi</h3><ul><li>Kolay kurulum</li><li>Güncel ayar dosyaları</li><li>Kullanım rehberi</li><li>Güncelleme desteği</li></ul><div class="price"><strong>250 TL</strong><del>500 TL</del></div><a class="btn btn-primary full" href="https://www.shopier.com/linamacros/33482000">Satın Al ↗</a></article>
+            <article class="product-card reveal"><div class="product-top"><span>●●● PUBG MOBILE</span><em>%50 İndirim</em></div><h3>PUBG Mobile (PC)<br>Makro Paketi</h3><ul><li>Kolay kurulum</li><li>Güncel ayar dosyaları</li><li>Kullanım rehberi</li><li>Güncelleme desteği</li></ul><div class="price"><strong>250 TL</strong><del>500 TL</del></div><a class="btn btn-primary full" href="https://www.shopier.com/linamacros/33090562">Satın Al ↗</a></article>
+            <article class="product-card reveal"><div class="product-top"><span>●●● VALORANT</span><em>%70 İndirim</em></div><h3>Valorant Makro<br>Paketi</h3><ul><li>Kolay kurulum</li><li>Güncel ayar dosyaları</li><li>Kullanım rehberi</li><li>Güncelleme desteği</li></ul><div class="price"><strong>150 TL</strong><del>500 TL</del></div><a class="btn btn-primary full" href="https://www.shopier.com/linamacros/33088510">Satın Al ↗</a></article>
+            <article class="product-card reveal"><div class="product-top"><span>●●● CS2</span><em>%50 İndirim</em></div><h3>CS2 Makro Paketi</h3><ul><li>Kolay kurulum</li><li>Güncel ayar dosyaları</li><li>Kullanım rehberi</li><li>Güncelleme desteği</li></ul><div class="price"><strong>250 TL</strong><del>500 TL</del></div><a class="btn btn-primary full" href="https://www.shopier.com/linamacros/33086748">Satın Al ↗</a></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-grid advantages" id="destek">
+        <div class="container">
+          <div class="section-head reveal"><div class="kicker">AVANTAJLAR</div><h2>Neden Lina Macros?</h2><p>Satın almadan kuruluma kadar süreci mümkün olduğunca basit tutuyoruz.</p></div>
+          <div class="adv-grid">
+            <article class="info-card reveal"><div class="icon">⇩</div><h3>Kolay Kurulum</h3><p>Teknik detaylarla uğraşmadan kuruluma başlayabilirsin.</p></article>
+            <article class="info-card reveal"><div class="icon">☷</div><h3>Adım Adım Rehber</h3><p>Ne yapman gerektiğini açık ve anlaşılır şekilde takip et.</p></article>
+            <article class="info-card reveal"><div class="icon">↻</div><h3>Güncelleme Desteği</h3><p>Gerekli değişikliklerde güncel dosya ve bilgilerden yararlan.</p></article>
+            <article class="info-card reveal"><div class="icon">◉</div><h3>Satış Sonrası<br>Destek</h3><p>Kurulum veya kullanım sırasında ihtiyaç duyduğunda destek al.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-grid steps" id="nasil-calisir">
+        <div class="container">
+          <div class="section-head reveal"><div class="kicker">NASIL ÇALIŞIR</div><h2>3 Adımda Başla</h2></div>
+          <div class="steps-grid reveal">
+            <article><div class="step-icon"><span>01</span>◇</div><h3>Paketini Seç</h3><p>Oynadığın oyuna uygun paketi belirle.</p></article>
+            <article><div class="step-icon"><span>02</span>▭</div><h3>Shopier'den Satın Al</h3><p>Ödemeni Shopier üzerinden güvenli şekilde tamamla.</p></article>
+            <article><div class="step-icon"><span>03</span>↗</div><h3>Kur ve Kullan</h3><p>Rehberi takip ederek kurulumu tamamla.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section payment section-grid">
+        <div class="container">
+          <div class="payment-card reveal"><div class="shield">♢</div><h2>Ödeme Shopier Üzerinden</h2><p>Ödeme işlemin doğrudan Shopier altyapısı üzerinden tamamlanır. Kart bilgileriniz Lina Macros tarafından işlenmez veya saklanmaz.</p></div>
+        </div>
+      </section>
+
+      <section class="section faq section-grid" id="sss">
+        <div class="container narrow">
+          <div class="section-head reveal"><div class="kicker">YARDIM</div><h2>Sıkça Sorulan Sorular</h2></div>
+          <div class="faq-list reveal">
+            <details><summary>Satın alma işlemi nasıl yapılıyor?</summary><p>Satın Al butonuna bastığınızda ilgili ürünün Shopier sayfasına yönlendirilirsiniz. Ödeme işlemini Shopier üzerinden tamamlayabilirsiniz.</p></details>
+            <details><summary>Ürünü nasıl teslim alacağım?</summary><p>Satın alma işleminden sonra ürün teslimatı ve gerekli bilgiler tarafınıza iletilir.</p></details>
+            <details><summary>Kurulum zor mu?</summary><p>Hayır. Paketler kullanım ve kurulum rehberiyle birlikte sunulur.</p></details>
+            <details><summary>Güncelleme desteği var mı?</summary><p>Evet. Paketlerle ilgili gerekli güncellemelerde destek sağlanır.</p></details>
+            <details><summary>Destek nasıl alabilirim?</summary><p>Satın alma sonrası belirtilen destek kanalları üzerinden bizimle iletişime geçebilirsiniz.</p></details>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta section-grid reveal">
+        <div class="container center-copy"><h2>Oyununa Uygun <span>Paketi</span><br>Seç</h2><p>Paketi seç, Shopier üzerinden satın al ve kullanmaya başla.</p><a class="btn btn-primary hero-btn" href="#urunler">Ürünleri İncele <span>↓</span></a></div>
+      </section>
+    </main>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Lina Macros</title>
+  <rect width="64" height="64" rx="15" fill="#071015"/>
+  <rect x="4" y="4" width="56" height="56" rx="12" fill="none" stroke="#2d8178" stroke-width="3"/>
+  <path d="M20 16v32h24" fill="none" stroke="#63ead9" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="47" cy="17" r="4" fill="#63ead9"/>
+</svg>
