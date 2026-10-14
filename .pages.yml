@@ -16,6 +16,39 @@ settings:
       rename: "content(blog): {oldFilename} -> {newFilename}"
 
 content:
+  - name: faqs
+    label: Sık Sorulan Sorular
+    type: file
+    path: src/_data/faqs.json
+    format: json
+    list:
+      min: 1
+      collapsible:
+        collapsed: true
+        summary: "{question}"
+    fields:
+      - name: question
+        label: Soru
+        type: string
+        required: true
+      - name: answer
+        label: Cevap
+        type: text
+        required: true
+      - name: category
+        label: Kategori
+        type: string
+        required: true
+      - name: order
+        label: Sıralama
+        type: number
+        required: true
+        options:
+          min: 0
+      - name: active
+        label: Aktif
+        type: boolean
+        default: true
   - name: posts
     label: Blog Yazıları
     type: collection

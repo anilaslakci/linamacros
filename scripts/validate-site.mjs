@@ -151,11 +151,15 @@ if (!siteCss.includes(".site-header.is-scrolled") || !siteCss.includes("scroll-p
   fail("Sticky menü, anchor boşluğu veya kapsayıcı overflow düzeltmesi eksik.");
 }
 const siteScript = await readFile(path.join(dist, "assets", "js", "script.js"), "utf8");
+const supportScript = await readFile(path.join(dist, "assets", "js", "support-widget.js"), "utf8");
 if (!siteScript.includes("is-scrolled") || !siteScript.includes("aria-expanded','false")) fail("Sticky menü durumu veya mobil menü kapanış senkronu eksik.");
-for (const marker of ["data-support-toggle", "data-support-panel", "aria-controls=\"support-widget-panel\"", "lina_support_widget_closed"]) {
-  if (!home.includes(marker) && !siteScript.includes(marker)) fail(`Destek widget işareti eksik: ${marker}`);
+for (const marker of ["data-support-toggle", "data-support-panel", "aria-controls=\"support-widget-panel\"", "lina_support_bubble_count"]) {
+  if (!home.includes(marker) && !supportScript.includes(marker)) fail(`Destek widget işareti eksik: ${marker}`);
 }
-if (!siteScript.includes("event.key==='Escape'")) fail("Destek widget ESC ile kapanmıyor.");
+if (!supportScript.includes("event.key === 'Escape'")) fail("Destek widget ESC ile kapanmıyor.");
+for (const timing of ["FIRST_DELAY = 5000", "VISIBLE_DURATION = 6000", "REPEAT_DELAY = 90000", "MAX_SHOWS = 3"]) {
+  if (!supportScript.includes(timing)) fail(`Destek balonu zamanlama sözleşmesi eksik: ${timing}`);
+}
 
 const telegramUrl = "https://t.me/LinaMacrosDestekBot";
 for (const file of htmlFiles) {

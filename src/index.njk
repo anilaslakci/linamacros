@@ -145,10 +145,10 @@ permalink: /
             <source srcset="/assets/images/mascots/lina-mascot-main.webp" type="image/webp">
             <img src="/assets/images/mascots/lina-mascot-main.png" width="720" height="900" loading="lazy" decoding="async" alt="Lina Macros kadın oyuncu maskotu başparmağıyla onay işareti yapıyor">
           </picture>
-          {% if site.showTrustStats %}
+          {% if site.trustStats.visible and site.trustStats.sourceVerified %}
           <div class="brand-trust-stats">
-            <article><strong>3.000+</strong><span>Kullanıcı</span></article>
-            <article><strong>4,8/5</strong><span aria-label="5 üzerinden 4,8">★★★★★</span><small>Kullanıcı Memnuniyeti</small></article>
+            <article><strong>{{ site.trustStats.users.value }}</strong><span>{{ site.trustStats.users.label }}</span></article>
+            <article><strong>{{ site.trustStats.satisfaction.value }}</strong><span aria-hidden="true">{{ site.trustStats.satisfaction.stars }}</span><small>{{ site.trustStats.satisfaction.label }}</small></article>
           </div>
           {% endif %}
         </div>
@@ -164,11 +164,9 @@ permalink: /
             </picture>
           </div>
           <div class="faq-list reveal">
-            <details><summary>Satın alma işlemi nasıl yapılıyor?</summary><p>Satın Al butonuna bastığınızda ilgili ürünün Shopier sayfasına yönlendirilirsiniz. Ödeme işlemini Shopier üzerinden tamamlayabilirsiniz.</p></details>
-            <details><summary>Ürünü nasıl teslim alacağım?</summary><p>Satın alma işleminden sonra ürün teslimatı ve gerekli bilgiler tarafınıza iletilir.</p></details>
-            <details><summary>Kurulum zor mu?</summary><p>Hayır. Paketler kullanım ve kurulum rehberiyle birlikte sunulur.</p></details>
-            <details><summary>Güncelleme desteği var mı?</summary><p>Evet. Paketlerle ilgili gerekli güncellemelerde destek sağlanır.</p></details>
-            <details><summary>Destek nasıl alabilirim?</summary><p><a href="{{ site.telegramSupport }}" target="_blank" rel="noopener noreferrer">Lina Macros Telegram destek botunu</a> açarak önce hazır cevaplardan yararlanabilir, sorun çözülmezse canlı destek talebi oluşturabilirsiniz.</p></details>
+            {% for faq in faqs | activeFaqs %}
+            <details><summary>{{ faq.question }}</summary><p>{{ faq.answer }}{% if faq.category == 'Destek' %} <a href="{{ site.telegramSupport }}" target="_blank" rel="noopener noreferrer">Telegram destek botunu aç</a>.{% endif %}</p></details>
+            {% endfor %}
           </div>
         </div>
       </section>

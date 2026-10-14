@@ -1,0 +1,7 @@
+[
+  { "question": "Satın alma işlemi nasıl yapılıyor?", "answer": "Satın Al butonuna bastığınızda ilgili ürünün Shopier sayfasına yönlendirilirsiniz. Ödeme işlemini Shopier üzerinden tamamlayabilirsiniz.", "category": "Satın Alma", "order": 10, "active": true },
+  { "question": "Ürünü nasıl teslim alacağım?", "answer": "Satın alma işleminden sonra ürün teslimatı ve gerekli bilgiler tarafınıza iletilir.", "category": "Teslimat", "order": 20, "active": true },
+  { "question": "Kurulum zor mu?", "answer": "Hayır. Paketler kullanım ve kurulum rehberiyle birlikte sunulur.", "category": "Kurulum", "order": 30, "active": true },
+  { "question": "Güncelleme desteği var mı?", "answer": "Evet. Paketlerle ilgili gerekli güncellemelerde destek sağlanır.", "category": "Güncelleme", "order": 40, "active": true },
+  { "question": "Destek nasıl alabilirim?", "answer": "Lina Macros Telegram destek botunu açarak önce hazır cevaplardan yararlanabilir, sorun çözülmezse canlı destek talebi oluşturabilirsiniz.", "category": "Destek", "order": 50, "active": true }
+]

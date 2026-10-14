@@ -21,6 +21,9 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("relatedPosts", (posts, currentUrl) => posts
     .filter((item) => item.url !== currentUrl)
     .slice(0, 3));
+  eleventyConfig.addFilter("activeFaqs", (faqs = []) => faqs
+    .filter((faq) => faq?.active === true && String(faq.question ?? "").trim() && String(faq.answer ?? "").trim())
+    .sort((a, b) => Number(a.order ?? 0) - Number(b.order ?? 0)));
 
   eleventyConfig.addCollection("posts", (collectionApi) => collectionApi
     .getFilteredByGlob("src/blog/posts/*.md")

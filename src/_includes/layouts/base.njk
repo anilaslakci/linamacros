@@ -55,6 +55,15 @@
     "inLanguage": "tr-TR"
   }
   </script>
+  {% if page.url == '/' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{% for faq in faqs | activeFaqs %}{% if not loop.first %},{% endif %}{"@type":"Question","name":{{ faq.question | dump | safe }},"acceptedAnswer":{"@type":"Answer","text":{{ faq.answer | dump | safe }}}}{% endfor %}]
+  }
+  </script>
+  {% endif %}
   {% endif %}
 </head>
 <body class="{% if bodyClass %}{{ bodyClass }}{% endif %}">
@@ -77,5 +86,6 @@
   <script>window.LINA_ANALYTICS_ID = {{ site.analyticsMeasurementId | dump | safe }};</script>
   <script src="/assets/js/consent-analytics.js" defer></script>
   <script src="/assets/js/script.js" defer></script>
+  <script src="/assets/js/support-widget.js" defer></script>
 </body>
 </html>

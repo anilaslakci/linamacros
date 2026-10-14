@@ -11,7 +11,10 @@
       <a href="{{ site.telegramSupport }}" target="_blank" rel="noopener noreferrer">💬 <span>Telegram Destek</span></a>
     </nav>
   </div>
-  <span class="support-widget-bubble" data-support-bubble>Bir konuda yardım lazım mı?</span>
+  <div class="support-widget-bubble" data-support-bubble hidden>
+    <span>Sana nasıl yardımcı olmamı istersin? 💬</span>
+    <button type="button" data-support-bubble-close aria-label="Konuşma balonunu kapat">×</button>
+  </div>
   <button class="support-widget-toggle" type="button" data-support-toggle aria-controls="support-widget-panel" aria-expanded="false" aria-label="Hızlı destek menüsünü aç">
     <picture>
       <source srcset="/assets/images/mascots/lina-mascot-corner.webp" type="image/webp">

@@ -9,5 +9,10 @@
   "shopier": "https://www.shopier.com/linamacros",
   "telegramSupport": "https://t.me/LinaMacrosDestekBot",
   "analyticsMeasurementId": "G-SBGM63WMGG",
-  "showTrustStats": false
+  "trustStats": {
+    "visible": false,
+    "sourceVerified": false,
+    "users": { "value": "3.000+", "label": "Kullanıcı" },
+    "satisfaction": { "value": "4,8/5", "label": "Kullanıcı Memnuniyeti", "stars": "★★★★★" }
+  }
 }
