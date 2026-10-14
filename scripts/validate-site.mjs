@@ -141,6 +141,7 @@ for (const text of ["Oyunu Biliyoruz, Oyuncuyu Anlıyoruz.", "Bloody Mouse Uyuml
 }
 if (!home.includes('class="btn btn-primary brand-trust-cta" href="#urunler"')) fail("Marka güven bölümü CTA bağlantısı ürünlere gitmiyor.");
 if (home.includes("3.000+ Kullanıcı") || home.includes("4,8/5 Kullanıcı Memnuniyeti")) fail("Doğrulanmamış istatistikler canlı HTML içinde görünmemeli.");
+if (home.includes("3.000+") || home.includes("4,8/5")) fail("Doğrulanmamış istatistik rakamları canlı HTML içinde görünmemeli.");
 if (home.includes("Oyununa Uygun <span>Paketi</span>") || home.includes("Paketi seç, Shopier üzerinden satın al ve kullanmaya başla.")) {
   fail("Kaldırılan son paket CTA bölümü hâlâ ana sayfada bulunuyor.");
 }
@@ -151,6 +152,30 @@ if (!siteCss.includes(".site-header.is-scrolled") || !siteCss.includes("scroll-p
 }
 const siteScript = await readFile(path.join(dist, "assets", "js", "script.js"), "utf8");
 if (!siteScript.includes("is-scrolled") || !siteScript.includes("aria-expanded','false")) fail("Sticky menü durumu veya mobil menü kapanış senkronu eksik.");
+for (const marker of ["data-support-toggle", "data-support-panel", "aria-controls=\"support-widget-panel\"", "lina_support_widget_closed"]) {
+  if (!home.includes(marker) && !siteScript.includes(marker)) fail(`Destek widget işareti eksik: ${marker}`);
+}
+if (!siteScript.includes("event.key==='Escape'")) fail("Destek widget ESC ile kapanmıyor.");
+
+const telegramUrl = "https://t.me/LinaMacrosDestekBot";
+for (const file of htmlFiles) {
+  const html = await readFile(file, "utf8");
+  if (!html.includes(`href="${telegramUrl}" target="_blank" rel="noopener noreferrer"`)) {
+    fail(`${path.relative(dist, file)}: merkezi Telegram destek bağlantısı eksik.`);
+  }
+  if (html.includes("t.me/justalmora") || html.includes("@justalmora")) fail(`${path.relative(dist, file)}: kişisel Telegram desteği kalmış.`);
+}
+for (const name of ["main", "faq-right", "support", "trust", "corner"]) {
+  for (const extension of ["png", "webp"]) {
+    if (!await exists(path.join(dist, "assets", "images", "mascots", `lina-mascot-${name}.${extension}`))) {
+      fail(`Maskot dosyası eksik: lina-mascot-${name}.${extension}`);
+    }
+  }
+}
+for (const marker of ["lina-mascot-main.webp", "lina-mascot-faq-right.webp", "lina-mascot-support.webp", "lina-mascot-corner.webp"]) {
+  if (!home.includes(marker)) fail(`Ana sayfada maskot kullanımı eksik: ${marker}`);
+}
+if (!home.includes('loading="lazy"') || !home.includes('width="720" height="900"')) fail("Maskot boyut sabitleme veya lazy-load eksik.");
 
 const analyticsScript = await readFile(path.join(dist, "assets", "js", "consent-analytics.js"), "utf8");
 for (const marker of ["click_shopier", "click_outbound", "product_name", "game", "destination_url", "analytics_storage", "lina_analytics_consent_v1"]) {

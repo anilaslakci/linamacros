@@ -90,6 +90,18 @@ permalink: /
             <article class="info-card reveal"><div class="icon">↻</div><h3>Güncelleme Desteği</h3><p>Gerekli değişikliklerde güncel dosya ve bilgilerden yararlan.</p></article>
             <article class="info-card reveal"><div class="icon">◉</div><h3>Satış Sonrası<br>Destek</h3><p>Kurulum veya kullanım sırasında ihtiyaç duyduğunda destek al.</p></article>
           </div>
+          <div class="support-callout reveal">
+            <picture class="support-mascot">
+              <source srcset="/assets/images/mascots/lina-mascot-support.webp" type="image/webp">
+              <img src="/assets/images/mascots/lina-mascot-support.png" width="620" height="775" loading="lazy" decoding="async" alt="Lina Macros destek maskotu dizüstü bilgisayarla yardım sunuyor">
+            </picture>
+            <div class="support-callout-copy">
+              <div class="kicker">TELEGRAM DESTEK</div>
+              <h2>Kurulumda takıldın mı?</h2>
+              <p>Önce hazır cevap menüsünden hızlı çözümü bul. Sorunun devam ederse bot üzerinden canlı destek talebi oluştur.</p>
+              <a class="btn btn-primary" href="{{ site.telegramSupport }}" target="_blank" rel="noopener noreferrer">Telegram'dan Destek Al <span>↗</span></a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -129,11 +141,10 @@ permalink: /
             </div>
             <a class="btn btn-primary brand-trust-cta" href="#urunler">Paketleri İncele <span>↑</span></a>
           </div>
-          <div class="brand-trust-panel reveal" aria-hidden="true">
-            <div class="brand-trust-emblem"><span class="brand-mark">L<span class="brand-dot"></span></span><strong>LINA<br>MACROS</strong></div>
-            <div class="brand-trust-lines"><i></i><i></i><i></i></div>
-            <p>OYUNCU ODAKLI<br>PRATİK ÇÖZÜMLER</p>
-          </div>
+          <picture class="brand-trust-mascot reveal">
+            <source srcset="/assets/images/mascots/lina-mascot-main.webp" type="image/webp">
+            <img src="/assets/images/mascots/lina-mascot-main.png" width="720" height="900" loading="lazy" decoding="async" alt="Lina Macros kadın oyuncu maskotu başparmağıyla onay işareti yapıyor">
+          </picture>
           {% if site.showTrustStats %}
           <div class="brand-trust-stats">
             <article><strong>3.000+</strong><span>Kullanıcı</span></article>
@@ -145,13 +156,19 @@ permalink: /
 
       <section class="section faq section-grid" id="sss">
         <div class="container narrow">
-          <div class="section-head reveal"><div class="kicker">YARDIM</div><h2>Sıkça Sorulan Sorular</h2></div>
+          <div class="faq-heading-row reveal">
+            <div class="section-head"><div class="kicker">YARDIM</div><h2>Sıkça Sorulan Sorular</h2><p>Satın alma, teslimat ve kurulumla ilgili en çok merak edilenler.</p></div>
+            <picture class="faq-mascot" aria-hidden="true">
+              <source srcset="/assets/images/mascots/lina-mascot-faq-right.webp" type="image/webp">
+              <img src="/assets/images/mascots/lina-mascot-faq-right.png" width="520" height="650" loading="lazy" decoding="async" alt="">
+            </picture>
+          </div>
           <div class="faq-list reveal">
             <details><summary>Satın alma işlemi nasıl yapılıyor?</summary><p>Satın Al butonuna bastığınızda ilgili ürünün Shopier sayfasına yönlendirilirsiniz. Ödeme işlemini Shopier üzerinden tamamlayabilirsiniz.</p></details>
             <details><summary>Ürünü nasıl teslim alacağım?</summary><p>Satın alma işleminden sonra ürün teslimatı ve gerekli bilgiler tarafınıza iletilir.</p></details>
             <details><summary>Kurulum zor mu?</summary><p>Hayır. Paketler kullanım ve kurulum rehberiyle birlikte sunulur.</p></details>
             <details><summary>Güncelleme desteği var mı?</summary><p>Evet. Paketlerle ilgili gerekli güncellemelerde destek sağlanır.</p></details>
-            <details><summary>Destek nasıl alabilirim?</summary><p>Satın alma sonrası belirtilen destek kanalları üzerinden bizimle iletişime geçebilirsiniz.</p></details>
+            <details><summary>Destek nasıl alabilirim?</summary><p><a href="{{ site.telegramSupport }}" target="_blank" rel="noopener noreferrer">Lina Macros Telegram destek botunu</a> açarak önce hazır cevaplardan yararlanabilir, sorun çözülmezse canlı destek talebi oluşturabilirsiniz.</p></details>
           </div>
         </div>
       </section>

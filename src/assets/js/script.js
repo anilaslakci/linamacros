@@ -76,3 +76,32 @@ if(target && !prefersReducedMotion){
   };
   requestAnimationFrame(animate);
 }
+
+const supportWidget=document.querySelector('[data-support-widget]');
+const supportToggle=supportWidget?.querySelector('[data-support-toggle]');
+const supportPanel=supportWidget?.querySelector('[data-support-panel]');
+const supportClose=supportWidget?.querySelector('[data-support-close]');
+const supportBubble=supportWidget?.querySelector('[data-support-bubble]');
+const setSupportWidget=(open,{restoreFocus=true}={})=>{
+  if(!supportToggle||!supportPanel)return;
+  supportPanel.hidden=!open;
+  supportToggle.setAttribute('aria-expanded',String(open));
+  supportToggle.setAttribute('aria-label',open?'Hızlı destek menüsünü kapat':'Hızlı destek menüsünü aç');
+  if(open){
+    supportBubble?.setAttribute('hidden','');
+    supportPanel.querySelector('a')?.focus();
+  }else{
+    sessionStorage.setItem('lina_support_widget_closed','1');
+    if(restoreFocus)supportToggle.focus();
+  }
+};
+if(sessionStorage.getItem('lina_support_widget_closed')==='1')supportBubble?.setAttribute('hidden','');
+supportToggle?.addEventListener('click',()=>setSupportWidget(supportPanel.hidden));
+supportClose?.addEventListener('click',()=>setSupportWidget(false));
+supportWidget?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setSupportWidget(false,{restoreFocus:false})));
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&supportPanel&&!supportPanel.hidden)setSupportWidget(false);
+});
+document.addEventListener('click',event=>{
+  if(supportPanel&&!supportPanel.hidden&&!supportWidget.contains(event.target))setSupportWidget(false,{restoreFocus:false});
+});
