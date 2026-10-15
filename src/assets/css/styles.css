@@ -199,7 +199,7 @@ html{scroll-padding-top:96px}
 .brand-trust-emblem{display:flex;align-items:center;gap:18px}.brand-trust-emblem .brand-mark{width:58px;height:58px;font-size:28px;border-radius:14px}.brand-trust-emblem strong{font:700 24px/1.02 "Space Grotesk";letter-spacing:1px}
 .brand-trust-lines{display:grid;gap:13px}.brand-trust-lines i{display:block;height:1px;background:linear-gradient(90deg,#44d6c8,transparent)}.brand-trust-lines i:nth-child(2){width:78%}.brand-trust-lines i:nth-child(3){width:55%}
 .brand-trust-panel>p{margin:0;color:#6f8d94;font:700 11px/1.7 "Space Grotesk";letter-spacing:3px}
-.brand-trust-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.brand-trust-stats article{padding:25px;border:1px solid #24534f;border-radius:14px;background:#0a181d}.brand-trust-stats strong{display:block;color:var(--accent);font:700 34px "Space Grotesk"}.brand-trust-stats span,.brand-trust-stats small{display:block;margin-top:5px;color:#c3d2d5}.brand-trust-stats article:nth-child(2) span{color:#58dacd;letter-spacing:3px}
+.brand-trust-stats{display:flex;align-items:stretch;max-width:520px;margin-top:22px}.brand-trust-stats article{min-width:0;display:flex;align-content:center;align-items:baseline;flex-wrap:wrap;gap:3px 8px;padding:1px 22px;border:0;background:none}.brand-trust-stats article:first-child{padding-left:0}.brand-trust-stats article+article{border-left:1px solid rgba(91,159,153,.38)}.brand-trust-stats strong{color:var(--accent);font:700 23px/1.1 "Space Grotesk"}.brand-trust-stats span,.brand-trust-stats small{color:#aebfc3;font-size:12px;line-height:1.35}.brand-trust-stats article:nth-child(2) span{color:#58dacd;font-size:11px;letter-spacing:1.5px}.brand-trust-stats article:nth-child(2) small{flex-basis:100%;margin-left:0}
 
 @media(max-width:900px){
   .brand-trust-grid{grid-template-columns:1fr;gap:48px}
@@ -211,7 +211,11 @@ html{scroll-padding-top:96px}
   .brand-trust-copy h2{font-size:38px;letter-spacing:-1.5px}
   .brand-trust-text{font-size:16px}
   .brand-trust-panel{min-height:240px;padding:28px}
-  .brand-trust-stats{grid-template-columns:1fr}
+}
+@media(max-width:420px){
+  .brand-trust-stats{flex-direction:column;gap:12px}
+  .brand-trust-stats article{padding:0}
+  .brand-trust-stats article+article{padding-top:12px;border-top:1px solid rgba(91,159,153,.38);border-left:0}
 }
 
 /* Lina mascot integrations. */
