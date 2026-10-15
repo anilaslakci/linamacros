@@ -81,6 +81,7 @@ for (const file of htmlFiles) {
   if (!metaContent(html, "property", "og:image")) fail(`${relative}: og:image eksik.`);
   if (!attr(html, "meta", "name", "description")) fail(`${relative}: meta description eksik.`);
   if ((html.match(/\/assets\/js\/consent-analytics\.js/g) ?? []).length !== 1) fail(`${relative}: ortak Analytics rıza betiği tam bir kez yüklenmeli.`);
+  if ((html.match(/\/assets\/js\/campaign\.js/g) ?? []).length !== 1) fail(`${relative}: kampanya bitiş betiği tam bir kez yüklenmeli.`);
   if ((html.match(/window\.LINA_ANALYTICS_ID\s*=\s*"G-SBGM63WMGG"/g) ?? []).length !== 1) fail(`${relative}: GA4 yapılandırması tam bir kez bulunmalı.`);
   if (!html.includes("data-consent-accept") || !html.includes("data-consent-reject")) fail(`${relative}: analitik rıza seçenekleri eksik.`);
   if (html.includes("googletagmanager.com/gtag/js")) fail(`${relative}: GA4 etiketi rıza öncesinde statik olarak yüklenmemeli.`);
@@ -132,6 +133,12 @@ for (const url of shopierUrls) {
 }
 if ((home.match(/data-shopier-product=/g) ?? []).length !== 4 || (home.match(/data-shopier-game=/g) ?? []).length !== 4) {
   fail("Dört Shopier satın alma düğmesinin ürün ve oyun ölçüm bilgileri eksik.");
+}
+if ((home.match(/data-campaign(?:[ >])/g) ?? []).length !== 6 || (home.match(/class="product-campaign-tag"/g) ?? []).length !== 4) {
+  fail("Aktif kampanyanın üst bandı, ürün duyurusu veya dört ürün etiketi eksik.");
+}
+for (const placement of ["top_banner", "products_banner"]) {
+  if (!home.includes(`data-campaign-placement="${placement}"`)) fail(`Kampanya ölçüm konumu eksik: ${placement}`);
 }
 if (!home.includes('class="payment-card payment-card-link reveal" href="https://www.shopier.com/linamacros" target="_blank" rel="noopener noreferrer"')) {
   fail("Shopier bilgilendirme kartının tamamı güvenli, yeni sekmede açılan bağlantı değil.");
@@ -198,8 +205,17 @@ if (!cornerMetadata.hasAlpha || cornerMetadata.width !== 360 || cornerMetadata.h
 if (!home.includes('loading="lazy"') || !home.includes('width="720" height="900"')) fail("Maskot boyut sabitleme veya lazy-load eksik.");
 
 const analyticsScript = await readFile(path.join(dist, "assets", "js", "consent-analytics.js"), "utf8");
-for (const marker of ["click_shopier", "click_outbound", "product_name", "game", "destination_url", "analytics_storage", "lina_analytics_consent_v1"]) {
+for (const marker of ["click_shopier", "click_campaign_shopier", "click_outbound", "3_al_2_ode_2026", "campaign_name", "placement", "product_name", "game", "destination_url", "analytics_storage", "lina_analytics_consent_v1"]) {
   if (!analyticsScript.includes(marker)) fail(`Analytics betiğinde ${marker} eksik.`);
+}
+if ((analyticsScript.match(/click_campaign_shopier/g) ?? []).length !== 1) fail("Kampanya tıklama etkinliği betikte bir kez tanımlanmalı.");
+const campaignScript = await readFile(path.join(dist, "assets", "js", "campaign.js"), "utf8");
+for (const marker of ["data-campaign", "Date.now() + clockOffset", 'response.headers.get("date")', "visibilitychange", "MAX_TIMER_DELAY"]) {
+  if (!campaignScript.includes(marker)) fail(`İstemci kampanya bitiş koruması eksik: ${marker}`);
+}
+const workflow = await readFile(path.join(root, ".github", "workflows", "deploy-pages.yml"), "utf8");
+if (!workflow.includes('cron: "0 6 * * *"') || !workflow.includes("workflow_dispatch:") || !workflow.includes("branches: [main]")) {
+  fail("Günlük 09.00 Türkiye, manuel veya main push yayın tetikleyicisi korunmadı.");
 }
 if (!analyticsScript.includes('document.createElement("script")') || !analyticsScript.includes("googletagmanager.com/gtag/js")) {
   fail("GA4 etiketi rıza sonrasında dinamik yüklenmiyor.");

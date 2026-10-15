@@ -1,4 +1,5 @@
 import { getBuildTime, isPostPublished } from "./lib/publishing.mjs";
+import { isCampaignActive } from "./lib/campaign.mjs";
 
 export default function (eleventyConfig) {
   const buildTime = getBuildTime();
@@ -24,6 +25,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("activeFaqs", (faqs = []) => faqs
     .filter((faq) => faq?.active === true && String(faq.question ?? "").trim() && String(faq.answer ?? "").trim())
     .sort((a, b) => Number(a.order ?? 0) - Number(b.order ?? 0)));
+  eleventyConfig.addFilter("campaignActive", (campaign) => isCampaignActive(campaign, buildTime));
 
   eleventyConfig.addCollection("posts", (collectionApi) => collectionApi
     .getFilteredByGlob("src/blog/posts/*.md")

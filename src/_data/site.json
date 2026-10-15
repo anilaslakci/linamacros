@@ -9,6 +9,15 @@
   "shopier": "https://www.shopier.com/linamacros",
   "telegramSupport": "https://t.me/LinaMacrosDestekBot",
   "analyticsMeasurementId": "G-SBGM63WMGG",
+  "campaign": {
+    "enabled": true,
+    "name": "3_al_2_ode_2026",
+    "title": "3 AL, 2 ÖDE! 🎮",
+    "description": "İster aynı paketten 3 adet seç, ister farklı oyunların makro paketlerini birleştir. Yıl sonuna özel 3 Al 2 Öde fırsatından 31 Aralık 2026'ya kadar yararlan!",
+    "startDate": "2026-10-15T00:00:00+03:00",
+    "endDate": "2027-01-01T00:00:00+03:00",
+    "url": "https://www.shopier.com/linamacros"
+  },
   "trustStats": {
     "visible": false,
     "sourceVerified": false,

@@ -261,3 +261,19 @@ html{scroll-padding-top:96px}
 @media(prefers-reduced-motion:reduce){
   .support-widget-toggle,.support-widget-toggle picture,.payment-card-link{animation:none;transition:none}
 }
+
+/* 3 Al 2 Öde kampanyası */
+html:has(.campaign-bar:not([hidden])){scroll-padding-top:132px}
+.campaign-bar{min-height:36px;display:flex;align-items:center;justify-content:center;padding:7px 20px;border-bottom:1px solid rgba(99,226,212,.28);background:linear-gradient(90deg,#08201f,#103632 50%,#08201f);color:#eafffc;text-align:center;text-decoration:none;font:600 13px/1.4 "DM Sans",sans-serif;letter-spacing:.1px}
+.campaign-bar strong{color:#77f0e2;font-family:"Space Grotesk",sans-serif;letter-spacing:.5px}.campaign-bar i{margin:0 8px;color:#5e8f8c;font-style:normal}.campaign-bar small{margin-left:12px;color:#b8d4d2;font-size:12px}.campaign-bar:hover,.campaign-bar:focus-visible{background:linear-gradient(90deg,#0a2826,#15433e 50%,#0a2826);color:#fff;outline:none}.campaign-bar:focus-visible{box-shadow:inset 0 0 0 2px #63e2d4}.campaign-bar-short{display:none}
+.products-campaign{min-height:176px;margin:-12px 0 38px;padding:28px 30px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:34px;align-items:center;border:1px solid rgba(78,214,199,.48);border-radius:15px;background:radial-gradient(circle at 85% 20%,rgba(65,218,202,.13),transparent 34%),linear-gradient(115deg,rgba(11,31,35,.98),rgba(7,18,23,.98));box-shadow:0 18px 48px rgba(0,0,0,.2)}
+.products-campaign h3{margin:11px 0 8px;font:700 30px/1.1 "Space Grotesk",sans-serif;color:#f4fbfb}.products-campaign p{max-width:780px;margin:0;color:#a5bbc0;font-size:15px;line-height:1.6}.products-campaign-cta{min-width:210px;padding:16px 20px;white-space:nowrap}
+.product-campaign-tag{align-self:flex-start;display:inline-flex;margin:-13px 0 18px;padding:7px 10px;border:1px solid rgba(80,221,207,.4);border-radius:999px;background:rgba(16,61,58,.58);color:#86eee3;font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.25px}
+[data-campaign][hidden]{display:none!important}
+@media(max-width:900px){.products-campaign{grid-template-columns:1fr}.products-campaign-cta{justify-self:start}}
+@media(max-width:620px){
+  html:has(.campaign-bar:not([hidden])){scroll-padding-top:112px}
+  .campaign-bar{min-height:32px;padding:5px 10px;font-size:11px}.campaign-bar-long{display:none}.campaign-bar-short{display:flex;align-items:center;gap:8px}.campaign-bar-short small{margin:0;font-size:10px}
+  .products-campaign{min-height:0;margin:-8px 0 28px;padding:22px 20px;gap:20px}.products-campaign h3{font-size:26px}.products-campaign p{font-size:14px}.products-campaign-cta{width:100%;min-width:0}
+  .product-campaign-tag{margin-bottom:15px}
+}

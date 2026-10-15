@@ -113,6 +113,15 @@
       });
     }
 
+    if (link.matches("[data-campaign-placement]")) {
+      window.gtag("event", "click_campaign_shopier", {
+        campaign_name: "3_al_2_ode_2026",
+        placement: link.dataset.campaignPlacement,
+        destination_url: destination.href,
+        transport_type: "beacon"
+      });
+    }
+
     if (!link.matches("[data-shopier-product]")) return;
     const openInSameTab = !link.target || link.target === "_self";
     let navigated = false;

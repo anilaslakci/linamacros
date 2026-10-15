@@ -1,4 +1,10 @@
 <header class="site-header">
+  {% if site.campaign | campaignActive %}
+  <a class="campaign-bar" href="{{ site.campaign.url }}" target="_blank" rel="noopener noreferrer" data-campaign data-campaign-start="{{ site.campaign.startDate }}" data-campaign-end="{{ site.campaign.endDate }}" data-campaign-placement="top_banner" aria-label="3 Al 2 Öde kampanyası. 31 Aralık 2026'ya kadar geçerli. Shopier mağazasını yeni sekmede aç.">
+    <span class="campaign-bar-long">🎁 <strong>3 AL 2 ÖDE!</strong> <i>|</i> Tüm makro paketlerinde yıl sonu fırsatı! <small>31 Aralık'a kadar geçerli.</small></span>
+    <span class="campaign-bar-short">🎁 <strong>3 AL 2 ÖDE!</strong> <small>31 Aralık'a kadar</small></span>
+  </a>
+  {% endif %}
   <div class="container nav-wrap">
     <a class="brand" href="/" aria-label="Lina Macros ana sayfa">
       <span class="brand-mark">L<span class="brand-dot"></span></span>
