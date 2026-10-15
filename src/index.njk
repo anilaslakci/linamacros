@@ -149,13 +149,15 @@ permalink: /
               <span>Telegram Destek</span>
               <span>Uygun Fiyat</span>
             </div>
-            <a class="btn btn-primary brand-trust-cta" href="#urunler">Paketleri İncele <span>↑</span></a>
-            {% if site.trustStats.visible and site.trustStats.sourceVerified %}
-            <div class="brand-trust-stats" aria-label="Lina Macros güven istatistikleri">
-              <article><strong>{{ site.trustStats.users.value }}</strong><span>{{ site.trustStats.users.label }}</span></article>
-              <article><strong>{{ site.trustStats.satisfaction.value }}</strong><span aria-hidden="true">{{ site.trustStats.satisfaction.stars }}</span><small>{{ site.trustStats.satisfaction.label }}</small></article>
+            <div class="brand-trust-actions">
+              <a class="btn btn-primary brand-trust-cta" href="#urunler">Paketleri İncele <span>↑</span></a>
+              {% if site.trustStats.visible and site.trustStats.sourceVerified %}
+              <div class="brand-trust-stats" aria-label="Lina Macros güven istatistikleri">
+                <article><strong>{{ site.trustStats.users.value }}</strong><span>{{ site.trustStats.users.label }}</span></article>
+                <article><strong>{{ site.trustStats.satisfaction.value }}</strong><span aria-hidden="true">{{ site.trustStats.satisfaction.stars }}</span><small>{{ site.trustStats.satisfaction.label }}</small></article>
+              </div>
+              {% endif %}
             </div>
-            {% endif %}
           </div>
           <picture class="brand-trust-mascot reveal">
             <source srcset="/assets/images/mascots/lina-mascot-main.webp" type="image/webp">
