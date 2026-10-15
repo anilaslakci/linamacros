@@ -1,7 +1,44 @@
 [
-  { "question": "Satın alma işlemi nasıl yapılıyor?", "answer": "Satın Al butonuna bastığınızda ilgili ürünün Shopier sayfasına yönlendirilirsiniz. Ödeme işlemini Shopier üzerinden tamamlayabilirsiniz.", "category": "Satın Alma", "order": 10, "active": true },
-  { "question": "Ürünü nasıl teslim alacağım?", "answer": "Satın alma işleminden sonra ürün teslimatı ve gerekli bilgiler tarafınıza iletilir.", "category": "Teslimat", "order": 20, "active": true },
-  { "question": "Kurulum zor mu?", "answer": "Hayır. Paketler kullanım ve kurulum rehberiyle birlikte sunulur.", "category": "Kurulum", "order": 30, "active": true },
-  { "question": "Güncelleme desteği var mı?", "answer": "Evet. Paketlerle ilgili gerekli güncellemelerde destek sağlanır.", "category": "Güncelleme", "order": 40, "active": true },
-  { "question": "Destek nasıl alabilirim?", "answer": "Yardıma mı ihtiyacınız var? Telegram üzerinden bize ulaşabilirsiniz. Kurulum, sipariş ve ürünlerle ilgili sorularınızda yardımcı olmaktan memnuniyet duyarız.", "category": "Destek", "order": 50, "active": true }
+  {
+    "question": "Satın alma işlemi nasıl yapılıyor?",
+    "answer": "Satın Al butonuna bastığınızda ilgili ürünün Shopier sayfasına yönlendirilirsiniz. Ödeme işlemini Shopier üzerinden tamamlayabilirsiniz.",
+    "category": "Satın Alma",
+    "order": 10,
+    "active": true
+  },
+  {
+    "question": "Neden Shopier?",
+    "answer": "Ödeme altyapısı olarak güvenli ve sorun yaşamayacağımız global bir ödeme sistemidir Shopier. İnternet alışverişinde güvenlik önceliktir.",
+    "category": "Satın Alma",
+    "order": 20,
+    "active": true
+  },
+  {
+    "question": "Ürünü nasıl teslim alacağım?",
+    "answer": "Satın alma işleminden sonra ürün teslimatı ve gerekli bilgiler tarafınıza iletilir.",
+    "category": "Teslimat",
+    "order": 30,
+    "active": true
+  },
+  {
+    "question": "Kurulum zor mu?",
+    "answer": "Hayır. Paketler kullanım ve kurulum rehberiyle birlikte sunulur. Hem video hem telegram desteği mevcut.",
+    "category": "Kurulum",
+    "order": 40,
+    "active": true
+  },
+  {
+    "question": "Güncelleme desteği var mı?",
+    "answer": "Evet. Paketlerle ilgili gerekli güncellemelerde destek sağlanır.",
+    "category": "Güncelleme",
+    "order": 49,
+    "active": true
+  },
+  {
+    "question": "Destek nasıl alabilirim?",
+    "answer": "Yardıma mı ihtiyacınız var? Telegram üzerinden bize ulaşabilirsiniz. Kurulum, sipariş ve ürünlerle ilgili sorularınızda yardımcı olmaktan memnuniyet duyarız.",
+    "category": "Destek",
+    "order": 60,
+    "active": true
+  }
 ]
