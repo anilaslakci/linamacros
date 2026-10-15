@@ -98,7 +98,7 @@ permalink: /
             <div class="support-callout-copy">
               <div class="kicker">TELEGRAM DESTEK</div>
               <h2>Kurulumda takıldın mı?</h2>
-              <p>Önce hazır cevap menüsünden hızlı çözümü bul. Sorunun devam ederse bot üzerinden canlı destek talebi oluştur.</p>
+              <p>Merak ettiğiniz konularda hızlıca yardım alabilir, ihtiyaç duyduğunuzda bizimle iletişime geçebilirsiniz.</p>
               <a class="btn btn-primary" href="{{ site.telegramSupport }}" target="_blank" rel="noopener noreferrer">Telegram'dan Destek Al <span>↗</span></a>
             </div>
           </div>
@@ -118,7 +118,7 @@ permalink: /
 
       <section class="section payment section-grid">
         <div class="container">
-          <div class="payment-card reveal"><div class="shield">♢</div><h2>Ödeme Shopier Üzerinden</h2><p>Ödeme işlemin doğrudan Shopier altyapısı üzerinden tamamlanır. Kart bilgileriniz Lina Macros tarafından işlenmez veya saklanmaz.</p></div>
+          <a class="payment-card payment-card-link reveal" href="{{ site.shopier }}" target="_blank" rel="noopener noreferrer" aria-label="Lina Macros Shopier mağazasını yeni sekmede aç"><div class="shield">♢</div><h2>Ödeme Shopier Üzerinden</h2><p>Ödeme işlemin doğrudan Shopier altyapısı üzerinden tamamlanır. Kart bilgileriniz Lina Macros tarafından işlenmez veya saklanmaz.</p></a>
         </div>
       </section>
 
@@ -165,7 +165,7 @@ permalink: /
           </div>
           <div class="faq-list reveal">
             {% for faq in faqs | activeFaqs %}
-            <details><summary>{{ faq.question }}</summary><p>{{ faq.answer }}{% if faq.category == 'Destek' %} <a href="{{ site.telegramSupport }}" target="_blank" rel="noopener noreferrer">Telegram destek botunu aç</a>.{% endif %}</p></details>
+            <details><summary>{{ faq.question }}</summary><p>{{ faq.answer }}{% if faq.category == 'Destek' %} <a href="{{ site.telegramSupport }}" target="_blank" rel="noopener noreferrer">Telegram'dan Destek Al</a>.{% endif %}</p></details>
             {% endfor %}
           </div>
         </div>

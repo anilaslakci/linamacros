@@ -1,6 +1,7 @@
 import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { getBuildTime, isPostPublished } from "../lib/publishing.mjs";
+import sharp from "sharp";
 
 const root = process.cwd();
 const dist = path.join(root, "dist");
@@ -132,6 +133,9 @@ for (const url of shopierUrls) {
 if ((home.match(/data-shopier-product=/g) ?? []).length !== 4 || (home.match(/data-shopier-game=/g) ?? []).length !== 4) {
   fail("Dört Shopier satın alma düğmesinin ürün ve oyun ölçüm bilgileri eksik.");
 }
+if (!home.includes('class="payment-card payment-card-link reveal" href="https://www.shopier.com/linamacros" target="_blank" rel="noopener noreferrer"')) {
+  fail("Shopier bilgilendirme kartının tamamı güvenli, yeni sekmede açılan bağlantı değil.");
+}
 const faqIndex = home.indexOf('id="sss"');
 const brandTrustIndex = home.indexOf('class="section brand-trust');
 const homeBlogIndex = home.indexOf('class="section section-grid home-blog');
@@ -149,6 +153,9 @@ if (home.includes("Oyununa Uygun <span>Paketi</span>") || home.includes("Paketi 
 const siteCss = await readFile(path.join(dist, "assets", "css", "styles.css"), "utf8");
 if (!siteCss.includes(".site-header.is-scrolled") || !siteCss.includes("scroll-padding-top") || !siteCss.includes(".page-shell{overflow:clip}")) {
   fail("Sticky menü, anchor boşluğu veya kapsayıcı overflow düzeltmesi eksik.");
+}
+for (const marker of [".payment-card-link", "cursor:pointer", "@keyframes linaMascotBreathe", "prefers-reduced-motion:reduce"]) {
+  if (!siteCss.includes(marker)) fail(`Shopier kartı veya maskot hareketi stili eksik: ${marker}`);
 }
 const siteScript = await readFile(path.join(dist, "assets", "js", "script.js"), "utf8");
 const supportScript = await readFile(path.join(dist, "assets", "js", "support-widget.js"), "utf8");
@@ -168,6 +175,10 @@ for (const file of htmlFiles) {
     fail(`${path.relative(dist, file)}: merkezi Telegram destek bağlantısı eksik.`);
   }
   if (html.includes("t.me/justalmora") || html.includes("@justalmora")) fail(`${path.relative(dist, file)}: kişisel Telegram desteği kalmış.`);
+  const customerText = html.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<style[\s\S]*?<\/style>/gi, " ").replace(/href=["'][^"']*["']/gi, " ").replace(/<[^>]+>/g, " ");
+  if (/telegram\s+(destek\s+)?botu|bot\s+üzerinden\s+destek|botla\s+görüş/i.test(customerText)) {
+    fail(`${path.relative(dist, file)}: müşteriye gösterilen teknik Telegram botu ifadesi kalmış.`);
+  }
 }
 for (const name of ["main", "faq-right", "support", "trust", "corner"]) {
   for (const extension of ["png", "webp"]) {
@@ -176,8 +187,13 @@ for (const name of ["main", "faq-right", "support", "trust", "corner"]) {
     }
   }
 }
-for (const marker of ["lina-mascot-main.webp", "lina-mascot-faq-right.webp", "lina-mascot-support.webp", "lina-mascot-corner.webp"]) {
+for (const marker of ["lina-mascot-main.webp", "lina-mascot-faq-right.webp", "lina-mascot-support.webp", "lina-mascot-corner-transparent.webp"]) {
   if (!home.includes(marker)) fail(`Ana sayfada maskot kullanımı eksik: ${marker}`);
+}
+if (!home.includes("lina-mascot-corner-transparent.webp")) fail("Şeffaf optimize köşe maskotu kullanılmıyor.");
+const cornerMetadata = await sharp(path.join(dist, "assets", "images", "mascots", "lina-mascot-corner-transparent.webp")).metadata();
+if (!cornerMetadata.hasAlpha || cornerMetadata.width !== 360 || cornerMetadata.height !== 450) {
+  fail("Şeffaf köşe maskotu 360x450 alfa kanallı WebP değil.");
 }
 if (!home.includes('loading="lazy"') || !home.includes('width="720" height="900"')) fail("Maskot boyut sabitleme veya lazy-load eksik.");
 

@@ -3,5 +3,5 @@
   { "question": "Ürünü nasıl teslim alacağım?", "answer": "Satın alma işleminden sonra ürün teslimatı ve gerekli bilgiler tarafınıza iletilir.", "category": "Teslimat", "order": 20, "active": true },
   { "question": "Kurulum zor mu?", "answer": "Hayır. Paketler kullanım ve kurulum rehberiyle birlikte sunulur.", "category": "Kurulum", "order": 30, "active": true },
   { "question": "Güncelleme desteği var mı?", "answer": "Evet. Paketlerle ilgili gerekli güncellemelerde destek sağlanır.", "category": "Güncelleme", "order": 40, "active": true },
-  { "question": "Destek nasıl alabilirim?", "answer": "Lina Macros Telegram destek botunu açarak önce hazır cevaplardan yararlanabilir, sorun çözülmezse canlı destek talebi oluşturabilirsiniz.", "category": "Destek", "order": 50, "active": true }
+  { "question": "Destek nasıl alabilirim?", "answer": "Yardıma mı ihtiyacınız var? Telegram üzerinden bize ulaşabilirsiniz. Kurulum, sipariş ve ürünlerle ilgili sorularınızda yardımcı olmaktan memnuniyet duyarız.", "category": "Destek", "order": 50, "active": true }
 ]
