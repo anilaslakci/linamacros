@@ -122,6 +122,8 @@ for (const file of postHtmlFiles) {
 }
 
 const home = await readFile(path.join(dist, "index.html"), "utf8");
+const siteData = JSON.parse(await readFile(path.join(root, "src", "_data", "site.json"), "utf8"));
+const homeTemplate = await readFile(path.join(root, "src", "index.njk"), "utf8");
 const shopierUrls = [
   "https://www.shopier.com/linamacros/33482000",
   "https://www.shopier.com/linamacros/33090562",
@@ -151,8 +153,16 @@ for (const text of ["Oyunu Biliyoruz, Oyuncuyu Anlıyoruz.", "Bloody Mouse Uyuml
   if (!home.includes(text)) fail(`Marka güven bölümünde metin eksik: ${text}`);
 }
 if (!home.includes('class="btn btn-primary brand-trust-cta" href="#urunler"')) fail("Marka güven bölümü CTA bağlantısı ürünlere gitmiyor.");
-if (home.includes("3.000+ Kullanıcı") || home.includes("4,8/5 Kullanıcı Memnuniyeti")) fail("Doğrulanmamış istatistikler canlı HTML içinde görünmemeli.");
-if (home.includes("3.000+") || home.includes("4,8/5")) fail("Doğrulanmamış istatistik rakamları canlı HTML içinde görünmemeli.");
+const trustStatsMayPublish = siteData.trustStats?.visible === true && siteData.trustStats?.sourceVerified === true;
+const trustStatsRendered = home.includes('class="brand-trust-stats"');
+if (!homeTemplate.includes("site.trustStats.visible and site.trustStats.sourceVerified")) fail("Doğrulanmamış güven istatistiklerini engelleyen çift onay koşulu kaldırılmış.");
+if (trustStatsMayPublish) {
+  if (!trustStatsRendered) fail("Doğrulanmış güven istatistikleri ana sayfada görünmüyor.");
+  if (!home.includes(`<strong>${siteData.trustStats.users.value}</strong><span>${siteData.trustStats.users.label}</span>`)) fail("Doğrulanmış kullanıcı istatistiği yanlış veya eksik.");
+  if (!home.includes(`<strong>${siteData.trustStats.satisfaction.value}</strong>`) || !home.includes(`<small>${siteData.trustStats.satisfaction.label}</small>`)) fail("Doğrulanmış memnuniyet istatistiği yanlış veya eksik.");
+} else if (trustStatsRendered || home.includes("3.000+") || home.includes("4,8/5")) {
+  fail("Kaynağı doğrulanmamış güven istatistikleri canlı HTML içinde görünmemeli.");
+}
 if (home.includes("Oyununa Uygun <span>Paketi</span>") || home.includes("Paketi seç, Shopier üzerinden satın al ve kullanmaya başla.")) {
   fail("Kaldırılan son paket CTA bölümü hâlâ ana sayfada bulunuyor.");
 }
