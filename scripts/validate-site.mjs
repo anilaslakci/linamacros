@@ -136,6 +136,11 @@ for (const url of shopierUrls) {
 if ((home.match(/data-shopier-product=/g) ?? []).length !== 4 || (home.match(/data-shopier-game=/g) ?? []).length !== 4) {
   fail("Dört Shopier satın alma düğmesinin ürün ve oyun ölçüm bilgileri eksik.");
 }
+for (const productId of ["product-pubg-steam", "product-pubg-mobile", "product-valorant", "product-cs2"]) {
+  if ((home.match(new RegExp(`id="${productId}"`, "g")) ?? []).length !== 1) {
+    fail(`Ürün kartı doğrudan bağlantı kimliği eksik veya benzersiz değil: ${productId}`);
+  }
+}
 if ((home.match(/data-campaign(?:[ >])/g) ?? []).length !== 6 || (home.match(/class="product-campaign-tag"/g) ?? []).length !== 4) {
   fail("Aktif kampanyanın üst bandı, ürün duyurusu veya dört ürün etiketi eksik.");
 }

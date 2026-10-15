@@ -282,3 +282,10 @@ html:has(.campaign-bar:not([hidden])){scroll-padding-top:132px}
   .products-campaign{min-height:0;margin:-8px 0 28px;padding:22px 20px;gap:20px}.products-campaign h3{font-size:26px}.products-campaign p{font-size:14px}.products-campaign-cta{width:100%;min-width:0}
   .product-campaign-tag{margin-bottom:15px}
 }
+
+/* Direct product links keep the sticky campaign/header clear and briefly identify the requested card. */
+.product-card[id^="product-"]{scroll-margin-top:148px}
+#product-pubg-steam:target,#product-pubg-mobile:target,#product-valorant:target,#product-cs2:target{animation:productTargetHighlight 2.8s ease-out}
+@keyframes productTargetHighlight{0%,38%{border-color:#55e2d2;box-shadow:0 0 0 1px rgba(85,226,210,.34),0 0 30px rgba(85,226,210,.2)}100%{border-color:#18333c;box-shadow:0 0 0 0 rgba(85,226,210,0),0 0 0 rgba(85,226,210,0)}}
+@media(max-width:620px){.product-card[id^="product-"]{scroll-margin-top:124px}}
+@media(prefers-reduced-motion:reduce){#product-pubg-steam:target,#product-pubg-mobile:target,#product-valorant:target,#product-cs2:target{animation:none;border-color:#55e2d2;box-shadow:0 0 0 1px rgba(85,226,210,.24)}}
