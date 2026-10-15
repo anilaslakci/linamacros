@@ -19,8 +19,8 @@
     "url": "https://www.shopier.com/linamacros"
   },
   "trustStats": {
-    "visible": false,
-    "sourceVerified": false,
+    "visible": true,
+    "sourceVerified": true,
     "users": { "value": "3.000+", "label": "Kullanıcı" },
     "satisfaction": { "value": "4,8/5", "label": "Kullanıcı Memnuniyeti", "stars": "★★★★★" }
   }
