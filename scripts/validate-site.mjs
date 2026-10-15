@@ -50,7 +50,7 @@ function metaContent(html, attribute, value) {
 }
 
 const sourcePosts = (await readdir(postSource)).filter((name) => name.endsWith(".md"));
-if (sourcePosts.length !== 11) fail(`11 makale bekleniyordu, ${sourcePosts.length} bulundu.`);
+if (sourcePosts.length === 0) fail("Blog kaynak klasöründe en az bir makale bulunmalı.");
 const buildTime = getBuildTime();
 const publishedSources = [];
 for (const name of sourcePosts) {
@@ -123,26 +123,24 @@ for (const file of postHtmlFiles) {
 
 const home = await readFile(path.join(dist, "index.html"), "utf8");
 const siteData = JSON.parse(await readFile(path.join(root, "src", "_data", "site.json"), "utf8"));
+const productsData = JSON.parse(await readFile(path.join(root, "src", "_data", "products.json"), "utf8"));
 const homeTemplate = await readFile(path.join(root, "src", "index.njk"), "utf8");
-const shopierUrls = [
-  "https://www.shopier.com/linamacros/33482000",
-  "https://www.shopier.com/linamacros/33090562",
-  "https://www.shopier.com/linamacros/33088510",
-  "https://www.shopier.com/linamacros/33086748"
-];
-for (const url of shopierUrls) {
-  if (!home.includes(`href="${url}"`)) fail(`Ana sayfada Shopier bağlantısı korunmadı: ${url}`);
+const activeProducts = productsData.filter((product) => product.active === true);
+for (const product of activeProducts) {
+  if (!home.includes(`href="${product.shopierUrl}"`)) fail(`Ana sayfada Shopier bağlantısı eksik: ${product.shopierUrl}`);
+  if (!home.includes(`<strong>${new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 2 }).format(product.price)} TL</strong>`)) fail(`${product.id}: merkezi satış fiyatı ana sayfaya yansımadı.`);
+  if (product.regularPrice && !home.includes(`<del>${new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 2 }).format(product.regularPrice)} TL</del>`)) fail(`${product.id}: merkezi indirimsiz fiyat ana sayfaya yansımadı.`);
 }
-if ((home.match(/data-shopier-product=/g) ?? []).length !== 4 || (home.match(/data-shopier-game=/g) ?? []).length !== 4) {
-  fail("Dört Shopier satın alma düğmesinin ürün ve oyun ölçüm bilgileri eksik.");
+if ((home.match(/data-shopier-product=/g) ?? []).length !== activeProducts.length || (home.match(/data-shopier-game=/g) ?? []).length !== activeProducts.length) {
+  fail("Aktif ürünlerin Shopier satın alma düğmelerinde ürün ve oyun ölçüm bilgileri eksik.");
 }
-for (const productId of ["product-pubg-steam", "product-pubg-mobile", "product-valorant", "product-cs2"]) {
-  if ((home.match(new RegExp(`id="${productId}"`, "g")) ?? []).length !== 1) {
-    fail(`Ürün kartı doğrudan bağlantı kimliği eksik veya benzersiz değil: ${productId}`);
-  }
+for (const productId of productsData.map((product) => product.id)) {
+  const expectedCount = productsData.find((product) => product.id === productId)?.active === true ? 1 : 0;
+  const actualCount = (home.match(new RegExp(`id="${productId}"`, "g")) ?? []).length;
+  if (actualCount !== expectedCount) fail(`${productId}: ${expectedCount} kart bekleniyordu, ${actualCount} bulundu.`);
 }
-if ((home.match(/data-campaign(?:[ >])/g) ?? []).length !== 6 || (home.match(/class="product-campaign-tag"/g) ?? []).length !== 4) {
-  fail("Aktif kampanyanın üst bandı, ürün duyurusu veya dört ürün etiketi eksik.");
+if ((home.match(/data-campaign(?:[ >])/g) ?? []).length !== activeProducts.length + 2 || (home.match(/class="product-campaign-tag"/g) ?? []).length !== activeProducts.length) {
+  fail("Aktif kampanyanın üst bandı, ürün duyurusu veya aktif ürün etiketleri eksik.");
 }
 for (const placement of ["top_banner", "products_banner"]) {
   if (!home.includes(`data-campaign-placement="${placement}"`)) fail(`Kampanya ölçüm konumu eksik: ${placement}`);

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node scripts/clean-dist.mjs && eleventy",
     "dev": "eleventy --serve",
-    "test": "node scripts/validate-site.mjs && node scripts/test-scheduled-publishing.mjs && node scripts/test-faq-management.mjs && node scripts/test-campaign.mjs",
+    "test": "node scripts/validate-site.mjs && node scripts/test-scheduled-publishing.mjs && node scripts/test-faq-management.mjs && node scripts/test-product-management.mjs && node scripts/test-campaign.mjs",
     "check": "npm run build && npm run test"
   },
   "devDependencies": {

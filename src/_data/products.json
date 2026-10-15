@@ -1,0 +1,46 @@
+[
+  {
+    "id": "product-pubg-steam",
+    "name": "31in1 PUBG Steam Makro Paketi",
+    "game": "PUBG Steam",
+    "cardLabel": "PUBG STEAM",
+    "price": 250,
+    "regularPrice": 500,
+    "description": "PUBG Steam için kolay kurulumlu, güncel ayar dosyaları ve Türkçe kullanım rehberi içeren makro paketi.",
+    "shopierUrl": "https://www.shopier.com/linamacros/33482000",
+    "active": true
+  },
+  {
+    "id": "product-pubg-mobile",
+    "name": "PUBG Mobile (PC) Makro Paketi",
+    "game": "PUBG Mobile",
+    "cardLabel": "PUBG MOBILE",
+    "price": 250,
+    "regularPrice": 500,
+    "description": "PUBG Mobile PC için kolay kurulumlu, güncel ayar dosyaları ve Türkçe kullanım rehberi içeren makro paketi.",
+    "shopierUrl": "https://www.shopier.com/linamacros/33090562",
+    "active": true
+  },
+  {
+    "id": "product-valorant",
+    "name": "Valorant Makro Paketi",
+    "game": "Valorant",
+    "cardLabel": "VALORANT",
+    "price": 150,
+    "regularPrice": 500,
+    "description": "Valorant için kolay kurulumlu, güncel ayar dosyaları ve Türkçe kullanım rehberi içeren makro paketi.",
+    "shopierUrl": "https://www.shopier.com/linamacros/33088510",
+    "active": true
+  },
+  {
+    "id": "product-cs2",
+    "name": "CS2 Makro Paketi",
+    "game": "CS2",
+    "cardLabel": "CS2",
+    "price": 250,
+    "regularPrice": 500,
+    "description": "CS2 için kolay kurulumlu, güncel ayar dosyaları ve Türkçe kullanım rehberi içeren makro paketi.",
+    "shopierUrl": "https://www.shopier.com/linamacros/33086748",
+    "active": true
+  }
+]

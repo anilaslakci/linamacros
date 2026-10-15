@@ -16,6 +16,59 @@ settings:
       rename: "content(blog): {oldFilename} -> {newFilename}"
 
 content:
+  - name: products
+    label: Ürünler ve Fiyatlar
+    type: file
+    path: src/_data/products.json
+    format: json
+    list: true
+    fields:
+      - name: id
+        label: Ürün Kimliği
+        type: select
+        required: true
+        description: Doğrudan ürün bağlantısı için kullanılan sabit kimlik. Mevcut üründe değiştirmeyin.
+        options:
+          values: [product-pubg-steam, product-pubg-mobile, product-valorant, product-cs2]
+      - name: name
+        label: Ürün adı
+        type: string
+        required: true
+      - name: game
+        label: İlgili oyun
+        type: string
+        required: true
+        description: Analytics etkinliğinde gönderilen oyun adı.
+      - name: cardLabel
+        label: Kart üst etiketi
+        type: string
+        required: true
+        description: Kartın sol üstünde görünen kısa oyun adı.
+      - name: price
+        label: Güncel satış fiyatı (TL)
+        type: number
+        required: true
+        options:
+          min: 1
+      - name: regularPrice
+        label: İndirimsiz / üstü çizili fiyat (TL)
+        type: number
+        description: İndirim yoksa boş bırakabilirsiniz. Güncel satış fiyatından düşük olamaz.
+        options:
+          min: 1
+      - name: description
+        label: Kısa ürün açıklaması
+        type: text
+        required: true
+      - name: shopierUrl
+        label: Shopier satın alma bağlantısı
+        type: string
+        required: true
+        description: Ürünün mevcut Shopier bağlantısını yalnızca gerektiğinde değiştirin.
+      - name: active
+        label: Aktif
+        type: boolean
+        default: true
   - name: faqs
     label: Sık Sorulan Sorular
     type: file

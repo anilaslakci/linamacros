@@ -25,6 +25,18 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("activeFaqs", (faqs = []) => faqs
     .filter((faq) => faq?.active === true && String(faq.question ?? "").trim() && String(faq.answer ?? "").trim())
     .sort((a, b) => Number(a.order ?? 0) - Number(b.order ?? 0)));
+  eleventyConfig.addFilter("activeProducts", (products = []) => products
+    .filter((product) => product?.active === true));
+  eleventyConfig.addFilter("tryPrice", (value) => `${new Intl.NumberFormat("tr-TR", {
+    minimumFractionDigits: Number.isInteger(Number(value)) ? 0 : 2,
+    maximumFractionDigits: 2
+  }).format(Number(value))} TL`);
+  eleventyConfig.addFilter("discountPercent", (product) => {
+    const price = Number(product?.price);
+    const regularPrice = Number(product?.regularPrice);
+    if (!(price > 0) || !(regularPrice >= price)) return 0;
+    return Math.round((1 - price / regularPrice) * 100);
+  });
   eleventyConfig.addFilter("campaignActive", (campaign) => isCampaignActive(campaign, buildTime));
 
   eleventyConfig.addCollection("posts", (collectionApi) => collectionApi
