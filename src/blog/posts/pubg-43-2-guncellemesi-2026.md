@@ -3,8 +3,8 @@ title: "PUBG 43.2 Güncellemesi: Yenilikler ve PC Ayarları"
 description: PUBG 43.2 güncellemesinde neler değişti? Rondo, araç dengesi,
   performans yenilikleri ve güncelleme sonrası kontrol etmeniz gereken PC
   ayarları.
-date: 2026-10-17
-updated: 2026-10-17
+date: 2026-10-22
+updated: 2026-10-22
 category: PUBG
 readingTime: 4
 tags:

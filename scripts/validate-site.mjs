@@ -49,6 +49,21 @@ function metaContent(html, attribute, value) {
   return "";
 }
 
+function countWords(value) {
+  return (String(value ?? "").match(/[\p{L}\p{N}]+(?:[’'.-][\p{L}\p{N}]+)*/gu) ?? []).length;
+}
+
+function markdownBodyText(source) {
+  return source
+    .replace(/^---\s*[\s\S]*?\s*---\s*/, "")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[a-zA-Z0-9#]+;/g, " ")
+    .replace(/[#>*_`~|]/g, " ");
+}
+
 const sourcePosts = (await readdir(postSource)).filter((name) => name.endsWith(".md"));
 if (sourcePosts.length === 0) fail("Blog kaynak klasöründe en az bir makale bulunmalı.");
 const buildTime = getBuildTime();
@@ -100,6 +115,9 @@ for (const file of htmlFiles) {
 for (const file of postHtmlFiles) {
   const html = await readFile(file, "utf8");
   const relative = path.relative(dist, file).replaceAll("\\", "/");
+  const slug = relative.split("/").at(-2);
+  const source = await readFile(path.join(postSource, `${slug}.md`), "utf8");
+  const readingTime = Number(source.match(/^readingTime:\s*(\d+)/m)?.[1]);
   const description = metaContent(html, "name", "description");
   if (description.length < 120 || description.length > 160) fail(`${relative}: meta description ${description.length} karakter.`);
   if (metaContent(html, "property", "og:type") !== "article") fail(`${relative}: og:type article değil.`);
@@ -117,8 +135,14 @@ for (const file of postHtmlFiles) {
     .replace(/<[^>]+>/g, " ")
     .replace(/&[^;]+;/g, " ")
     .trim() ?? "";
-  const wordCount = plainText.split(/\s+/).filter(Boolean).length;
-  if (wordCount < 700) fail(`${relative}: içerik yalnızca ${wordCount} kelime.`);
+  const renderedWordCount = countWords(plainText);
+  const sourceWordCount = countWords(markdownBodyText(source));
+  const minimumWords = Math.max(300, Math.min(600, (Number.isFinite(readingTime) ? readingTime : 4) * 75));
+  if (renderedWordCount < minimumWords) fail(`${relative}: ${readingTime || "?"} dakikalık içerik için en az ${minimumWords} kelime bekleniyordu, ${renderedWordCount} bulundu.`);
+  const allowedDifference = Math.max(25, Math.ceil(sourceWordCount * 0.15));
+  if (Math.abs(renderedWordCount - sourceWordCount) > allowedDifference) {
+    fail(`${relative}: Markdown (${sourceWordCount}) ile HTML (${renderedWordCount}) kelime sayısı arasında olası içerik kesilmesine işaret eden fark var.`);
+  }
 }
 
 const home = await readFile(path.join(dist, "index.html"), "utf8");
