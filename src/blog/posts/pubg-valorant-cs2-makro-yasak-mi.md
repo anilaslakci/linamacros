@@ -4,6 +4,7 @@ description: "PUBG, Valorant ve CS2 için makro, script ve üçüncü taraf yaz�
 date: 2026-10-14
 updated: 2026-10-14
 category: Oyun Rehberi
+product: ""
 readingTime: 9
 tags:
   - PUBG makro yasak mı

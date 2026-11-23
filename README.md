@@ -5,6 +5,8 @@ Lina Macros'un `linamacros.com.tr` üzerinde yayınlanan statik web sitesi. Mevc
 ## Yapı
 
 - `src/index.njk`: ana sayfa
+- `src/_data/products.json`: ürün adı, açıklaması, fiyatı ve Shopier bağlantısının kaynağı
+- `src/urunler/product.njk`: aktif ürünleri `/urunler/<slug>/` adresinde yayımlayan ortak şablon. Sitemap aynı aktif ürün listesini kullanır.
 - `src/blog/posts/*.md`: blog yazıları
 - `.pages.yml`: Pages CMS editör alanları
 - `eleventy.config.js`: statik site üretimi
@@ -31,7 +33,7 @@ npm run check
 
 Bu komut siteyi `dist/` klasörüne üretir ve şunları otomatik kontrol eder:
 
-- 10 blog yazısı ve 12 sitemap URL'si
+- yayındaki blog yazıları, aktif ürün sayfaları ve üç sabit sayfanın sitemap kayıtları
 - title, meta description, canonical, Open Graph ve BlogPosting JSON-LD
 - iç bağlantılar ve dört mevcut Shopier ürün bağlantısı
 - `robots.txt`, `CNAME` ve favicon dosyaları

@@ -1,0 +1,15 @@
+<script type="application/ld+json">{{ site | websiteSchema | dump | safe }}</script>
+{% if page.url == '/' %}
+<script type="application/ld+json">{{ site | faqSchema(faqs | activeFaqs) | dump | safe }}</script>
+{% endif %}
+{% if layout == 'layouts/post.njk' %}
+{% set post = { title: title, description: description, datePublished: date | htmlDate, dateModified: (updated or date) | htmlDate, tags: tags } %}
+<script type="application/ld+json">{{ site | blogPostingSchema(page.url, post) | dump | safe }}</script>
+{% endif %}
+{% if isProductPage %}
+<script type="application/ld+json">{{ site | productSchema(page.url, product) | dump | safe }}</script>
+{% endif %}
+{% if isProductPage or layout == 'layouts/post.njk' %}
+{% set breadcrumbs = page.url | pageBreadcrumbs(title, isProductPage) %}
+<script type="application/ld+json">{{ site | breadcrumbSchema(breadcrumbs) | dump | safe }}</script>
+{% endif %}

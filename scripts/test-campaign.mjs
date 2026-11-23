@@ -8,6 +8,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const eleventyCli = path.join(root, "node_modules", "@11ty", "eleventy", "cmd.cjs");
 const temporaryRoot = path.join(root, ".tmp-campaign");
 const site = JSON.parse(await readFile(path.join(root, "src", "_data", "site.json"), "utf8"));
+const products = JSON.parse(await readFile(path.join(root, "src", "_data", "products.json"), "utf8"));
+const activeProductCount = products.filter((product) => product.active === true).length;
 const beforeStart = new Date("2026-10-14T20:59:59Z");
 const start = new Date("2026-10-14T21:00:00Z");
 const lastSecond = new Date("2026-12-31T20:59:59Z");
@@ -41,11 +43,11 @@ try {
   const activeOutput = path.join(temporaryRoot, "active");
   buildAt(lastSecond, activeOutput);
   const activeHome = await readFile(path.join(activeOutput, "index.html"), "utf8");
-  assert((activeHome.match(/data-campaign(?:[ >])/g) ?? []).length === 6, "Aktif kampanyada üst bant, ürün duyurusu ve dört ürün etiketi bulunmalı.");
+  assert((activeHome.match(/data-campaign(?:[ >])/g) ?? []).length === activeProductCount + 2, "Aktif kampanyada üst bant, ürün duyurusu ve aktif ürün etiketleri bulunmalı.");
   assert((activeHome.match(/data-campaign-placement=/g) ?? []).length === 2, "İki kampanya Shopier bağlantısı konum bilgisi taşımalı.");
   assert(activeHome.includes('data-campaign-placement="top_banner"'), "Üst bant ölçüm konumu eksik.");
   assert(activeHome.includes('data-campaign-placement="products_banner"'), "Ürün duyurusu ölçüm konumu eksik.");
-  assert((activeHome.match(/🎁 3 Al 2 Öde/g) ?? []).length === 4, "Dört ürün kartının kampanya etiketi eksik.");
+  assert((activeHome.match(/🎁 3 Al 2 Öde/g) ?? []).length === activeProductCount, "Aktif ürün kartlarının kampanya etiketi eksik.");
 
   const expiredOutput = path.join(temporaryRoot, "expired");
   buildAt(expiry, expiredOutput);

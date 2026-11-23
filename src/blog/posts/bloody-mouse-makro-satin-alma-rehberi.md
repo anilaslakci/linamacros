@@ -5,6 +5,7 @@ description: Bloody Mouse makro satın almadan önce nelere dikkat edilmeli? MGN
 date: 2026-11-05
 updated: 2026-11-05
 category: Teknik Rehber
+product: ""
 readingTime: 5
 tags:
   - Bloody Mouse makro satın al
@@ -96,7 +97,7 @@ Lina Macros'ta dört farklı oyun için makro paketi bulunmaktadır.
 
 Güncel fiyatlar ve ürün ayrıntıları için:
 
-[Lina Macros Makro Paketlerini İncele](https://linamacros.com.tr/#products)
+[Lina Macros makro paketlerini incele](/#urunler)
 
 ## Lina Macros neden tercih edilebilir?
 
@@ -123,5 +124,3 @@ Evet. Ürün ve uyumluluk soruları için Telegram üzerinden iletişime geçebi
 ## Sonuç
 
 Bloody Mouse makro paketi seçerken yalnızca fiyata değil, dosya formatına, oyun uyumluluğuna, kurulum açıklamalarına ve destek imkânına dikkat etmelisiniz.
-
-**[Lina Macros'taki güncel makro paketlerini inceleyin.](https://linamacros.com.tr/#products)**

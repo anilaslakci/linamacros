@@ -1,6 +1,7 @@
 [
   {
     "id": "product-pubg-steam",
+    "slug": "pubg-steam-makro-paketi",
     "name": "31in1 PUBG Steam Makro Paketi",
     "game": "PUBG Steam",
     "cardLabel": "PUBG STEAM",
@@ -12,6 +13,7 @@
   },
   {
     "id": "product-pubg-mobile",
+    "slug": "pubg-mobile-pc-makro-paketi",
     "name": "PUBG Mobile (PC) Makro Paketi",
     "game": "PUBG Mobile",
     "cardLabel": "PUBG MOBILE",
@@ -23,6 +25,7 @@
   },
   {
     "id": "product-valorant",
+    "slug": "valorant-makro-paketi",
     "name": "Valorant Makro Paketi",
     "game": "Valorant",
     "cardLabel": "VALORANT",
@@ -34,6 +37,7 @@
   },
   {
     "id": "product-cs2",
+    "slug": "cs2-makro-paketi",
     "name": "CS2 Makro Paketi",
     "game": "CS2",
     "cardLabel": "CS2",

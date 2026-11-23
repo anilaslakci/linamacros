@@ -4,6 +4,7 @@ description: "Oyun makrosunun ne olduğunu, donanım ve yazılım profillerinin 
 date: 2026-10-14
 updated: 2026-10-14
 category: Oyun Rehberi
+product: ""
 readingTime: 8
 tags:
   - oyun makrosu nedir

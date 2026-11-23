@@ -30,6 +30,12 @@ Kaydetme sonrasında teknik işlemler otomatik gerçekleşir: makale URL'si, say
 
 Dosya adı sonradan değiştirilemez. Bu özellik eski bağlantıların ve Google'daki URL'nin kazara bozulmaması için kapalıdır.
 
+## Ürün sayfaları
+
+**Ürünler ve Fiyatlar** bölümündeki aktif ürünlerin detay sayfası `/urunler/<slug>/` adresinde otomatik oluşur. Fiyat ve Shopier bağlantısı aynı kayıttan ana sayfa kartına ve detay sayfasına yansır.
+Mevcut ürünün **Kalıcı URL parçası** alanını değiştirmeyin. Bir ürün pasife alındığında kartı, detay sayfası ve sitemap kaydı kaldırılır.
+Blog yazısında **İlgili ürün paketi** alanı kenar panelindeki bağlantıyı belirler. Yazı zaten paket bağlantısı içeriyorsa panel bu bağlantıyı tekrarlamaz. Kural ve risk odaklı yazılarda satış çağrısı gösterilmez.
+
 ## Yayının tamamlandığını kontrol etme
 
 1. GitHub'da `anilaslakci/linamacros` deposunun **Actions** sekmesini açın.

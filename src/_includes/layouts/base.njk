@@ -29,42 +29,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <link rel="stylesheet" href="/assets/css/blog.css" />
-  {% if layout == 'layouts/post.njk' %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": {{ title | dump | safe }},
-    "description": {{ description | dump | safe }},
-    "datePublished": "{{ date | htmlDate }}",
-    "dateModified": "{{ (updated or date) | htmlDate }}",
-    "inLanguage": "tr-TR",
-    "mainEntityOfPage": {"@type": "WebPage", "@id": "{{ site.url }}{{ page.url }}"},
-    "author": {"@type": "Organization", "name": "{{ site.author }}", "url": "{{ site.url }}/"},
-    "publisher": {"@type": "Organization", "name": "{{ site.name }}", "url": "{{ site.url }}/", "logo": {"@type": "ImageObject", "url": "{{ site.url }}/icon-512.png"}}{% if tags %},
-    "keywords": {{ tags | join(', ') | dump | safe }}{% endif %}
-  }
-  </script>
-  {% else %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "{{ site.name }}",
-    "url": "{{ site.url }}/",
-    "inLanguage": "tr-TR"
-  }
-  </script>
-  {% if page.url == '/' %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [{% for faq in faqs | activeFaqs %}{% if not loop.first %},{% endif %}{"@type":"Question","name":{{ faq.question | dump | safe }},"acceptedAnswer":{"@type":"Answer","text":{{ faq.answer | dump | safe }}}}{% endfor %}]
-  }
-  </script>
-  {% endif %}
-  {% endif %}
+  {% include "partials/structured-data.njk" %}
 </head>
 <body class="{% if bodyClass %}{{ bodyClass }}{% endif %}">
   <div class="page-shell">

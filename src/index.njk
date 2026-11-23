@@ -84,7 +84,15 @@ permalink: /
           {% endif %}
           <div class="product-grid">
             {% for product in products | activeProducts %}
-            <article class="product-card reveal" id="{{ product.id | escape }}"><div class="product-top"><span>●●● {{ product.cardLabel | escape }}</span>{% if product.regularPrice and (product | discountPercent) > 0 %}<em>%{{ product | discountPercent }} İndirim</em>{% endif %}</div>{% if site.campaign | campaignActive %}<span class="product-campaign-tag" data-campaign data-campaign-start="{{ site.campaign.startDate }}" data-campaign-end="{{ site.campaign.endDate }}">🎁 3 Al 2 Öde</span>{% endif %}<h3>{{ product.name | escape }}</h3><ul><li>Kolay kurulum</li><li>Güncel ayar dosyaları</li><li>Kullanım rehberi</li><li>Güncelleme desteği</li></ul><div class="price"><strong>{{ product.price | tryPrice }}</strong>{% if product.regularPrice %}<del>{{ product.regularPrice | tryPrice }}</del>{% endif %}</div><a class="btn btn-primary full" href="{{ product.shopierUrl | escape }}" data-shopier-product="{{ product.name | escape }}" data-shopier-game="{{ product.game | escape }}">Satın Al ↗</a></article>
+            <article class="product-card reveal" id="{{ product.id | escape }}">
+              <div class="product-top"><span>●●● {{ product.cardLabel | escape }}</span>{% if product.regularPrice and (product | discountPercent) > 0 %}<em>%{{ product | discountPercent }} İndirim</em>{% endif %}</div>
+              {% if site.campaign | campaignActive %}<span class="product-campaign-tag" data-campaign data-campaign-start="{{ site.campaign.startDate }}" data-campaign-end="{{ site.campaign.endDate }}">🎁 3 Al 2 Öde</span>{% endif %}
+              <h3>{{ product.name | escape }}</h3>
+              <ul><li>Kolay kurulum</li><li>Güncel ayar dosyaları</li><li>Kullanım rehberi</li><li>Güncelleme desteği</li></ul>
+              <div class="price"><strong>{{ product.price | tryPrice }}</strong>{% if product.regularPrice %}<del>{{ product.regularPrice | tryPrice }}</del>{% endif %}</div>
+              <a class="btn btn-primary full" href="{{ product.shopierUrl | escape }}" data-shopier-product="{{ product.name | escape }}" data-shopier-game="{{ product.game | escape }}">Satın Al ↗</a>
+              <a class="text-link product-details-link" href="{{ product | productUrl }}" aria-label="{{ product.name | escape }} detayları">Paket detayları <span>→</span></a>
+            </article>
             {% endfor %}
           </div>
         </div>

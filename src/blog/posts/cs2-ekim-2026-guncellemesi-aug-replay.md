@@ -5,6 +5,7 @@ description: CS2 Ekim 2026 güncellemelerinde neler değişti? AUG silahındaki
 date: 2026-10-29
 updated: 2026-10-29
 category: CS2
+product: cs2-makro-paketi
 readingTime: 4
 tags:
   - CS2 Ekim 2026 güncellemesi
@@ -65,9 +66,7 @@ Kurulum için Türkçe açıklamalardan yararlanabilirsiniz.
 
 Makro kullanımından önce oyunun güncel kurallarını kontrol etmeniz gerekir. Resmî mouse yazılımının kullanılması tek başına oyun içi yaptırım olmayacağını garanti etmez.
 
-**CS2 paketini inceleyin:**
-
-[CS2 Makro Paketi](https://linamacros.com.tr/#product-cs2)
+[CS2 makro paketini incele](/urunler/cs2-makro-paketi/)
 
 ## Sonuç
 
@@ -75,7 +74,7 @@ CS2'nin Ekim 2026 güncellemeleri küçük teknik düzenlemelerden ibaret görü
 
 Özellikle AUG kullanan oyuncuların değişen şarjör değiştirme süresini dikkate alması, maçlarını analiz eden oyuncuların ise yenilenen replay özelliklerini denemesi faydalı olacaktır.
 
-Bloody Mouse kullanıcıları için mevcut paketlerimizi [Lina Macros ürünler bölümünde](https://linamacros.com.tr/#products) inceleyebilirsiniz.
+Bloody Mouse kullanıcıları için mevcut paketlerimizi [Lina Macros ürünler bölümünde](/#urunler) inceleyebilirsiniz.
 
 ### Kaynak
 

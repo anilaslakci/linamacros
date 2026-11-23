@@ -4,6 +4,7 @@ description: "PUBG recoil kontrolünü geliştirmek için silah, eklenti ve mesa
 date: 2026-10-14
 updated: 2026-10-14
 category: PUBG
+product: pubg-steam-makro-paketi
 readingTime: 8
 tags:
   - PUBG recoil kontrolü

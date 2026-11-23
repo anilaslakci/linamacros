@@ -6,6 +6,7 @@ description: PUBG Steam, PUBG Mobile PC, Valorant ve CS2 makro paketlerini
 date: 2026-11-12
 updated: 2026-11-12
 category: Oyun Rehberi
+product: ""
 readingTime: 5
 tags:
   - PUBG makro paketi
@@ -40,8 +41,6 @@ Paketin öne çıkan özellikleri:
 
 PUBG Steam oynayan ve Bloody Mouse kullanan oyuncular için hazırlanmıştır.
 
-**[PUBG Steam Makro Paketini İncele](https://linamacros.com.tr/#product-pubg-steam)**
-
 ## 2. PUBG Mobile (PC) makro paketi
 
 PUBG Mobile'ın bilgisayarda oynanan sürümünde farklı kontrol ve hassasiyet yapılandırmaları söz konusudur.
@@ -58,8 +57,6 @@ Lina Macros PUBG Mobile PC paketinde şu özellikler bulunuyor:
 - Kişisel hassasiyet yapılandırması
 
 Özellikle PUBG Mobile'ı bilgisayar üzerinden oynayanlar için ayrı hazırlanmış bir pakettir.
-
-**[PUBG Mobile PC Makro Paketini İncele](https://linamacros.com.tr/#product-pubg-mobile)**
 
 ## 3. CS2 makro paketi
 
@@ -78,8 +75,6 @@ bulunmaktadır.
 
 Farklı DPI ve hassasiyet değerleri kullanan oyuncuların profilleri kendi yapılandırmalarına göre kontrol etmesi gerekebilir.
 
-**[CS2 Makro Paketini İncele](https://linamacros.com.tr/#product-cs2)**
-
 ## 4. Valorant makro paketi
 
 Valorant, silah kullanımını ajan yetenekleri ve hareket mekanikleriyle birleştiren taktiksel bir FPS oyunudur.
@@ -97,17 +92,15 @@ Paket özellikleri:
 
 Bu paket, Valorant'a özel hazırlanmış içerik arayan oyunculara yöneliktir.
 
-**[Valorant Makro Paketini İncele](https://linamacros.com.tr/#product-valorant)**
-
 ## Makro paketlerinin karşılaştırması
 
 
 | Paket | Öne çıkan içerik |
 | -------------- | ------------------------------------ |
-| PUBG Steam | 31 silah ve dürbün profilleri |
-| PUBG Mobile PC | Spray, dürbün ve hareket profilleri |
-| CS2 | Silah kontrolü ve seri atış |
-| Valorant | Silah, hareket ve yetenek profilleri |
+| [PUBG Steam makro paketi](/urunler/pubg-steam-makro-paketi/) | 31 silah ve dürbün profilleri |
+| [PUBG Mobile (PC) makro paketi](/urunler/pubg-mobile-pc-makro-paketi/) | Spray, dürbün ve hareket profilleri |
+| [CS2 makro paketi](/urunler/cs2-makro-paketi/) | Silah kontrolü ve seri atış |
+| [Valorant makro paketi](/urunler/valorant-makro-paketi/) | Silah, hareket ve yetenek profilleri |
 
 
 ## Hangi mouse modelleri destekleniyor?
@@ -126,7 +119,7 @@ Paketlerin yanında Türkçe kurulum açıklamaları ve ihtiyaç hâlinde destek
 
 Makro kullanımının oyunun güncel kurallarıyla uyumluluğunu ayrıca değerlendirmelisiniz.
 
-**[Tüm Makro Paketlerini Karşılaştır](https://linamacros.com.tr/#products)**
+**[Tüm makro paketlerini karşılaştır](/#urunler)**
 
 ## Sonuç: Hangi paketi seçmelisiniz?
 
@@ -135,5 +128,3 @@ Tercihinizi öncelikle oynadığınız oyuna göre yapmalısınız.
 PUBG Steam ile PUBG Mobile PC birbirinden farklı yapılandırmalara sahiptir. CS2 ve Valorant paketleri de kendi oyun mekaniklerine göre hazırlanmıştır.
 
 Bu nedenle satın almadan önce oyun sürümünü, mouse modelini ve paket özelliklerini kontrol etmeniz önemlidir.
-
-**Lina Macros'un bütün paketlerini ve güncel fiyatlarını görmek için [ürünler bölümünü ziyaret edin](https://linamacros.com.tr/#products).**

@@ -28,3 +28,7 @@
 @media(max-width:700px){.consent-banner{grid-template-columns:1fr;gap:18px;bottom:12px;padding:20px}.consent-actions{display:grid;grid-template-columns:1fr 1fr}.consent-button{width:100%}}
 @media(max-width:620px){.blog-card-grid{grid-template-columns:1fr}.blog-card{min-height:0;padding:23px}.blog-hero{padding:72px 0 56px}.blog-hero h1{letter-spacing:-2px}.article-shell{padding:30px 0 76px}.breadcrumbs{margin-bottom:42px}.article-header{margin-bottom:42px}.article-header h1{font-size:39px;letter-spacing:-1.6px}.article-lead{font-size:17px}.article-content{font-size:17px;line-height:1.72}.article-content h2{font-size:28px}.article-content table{display:block;overflow-x:auto}.article-aside{grid-template-columns:1fr}.footer-links{width:100%;justify-content:flex-start}}
 @media(max-width:620px){.footer-bottom{flex-direction:column;gap:10px;padding-top:20px;text-align:center}.footer-bottom .copyright{text-align:center}.footer-community{justify-content:center}}
+
+.product-details-link{margin-top:16px;align-self:flex-start}
+.product-guides{margin-top:0}
+.article-aside > .aside-links:only-child{margin-top:0;grid-column:1/-1}

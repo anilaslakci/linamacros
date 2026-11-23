@@ -4,6 +4,7 @@ description: "PUBG hassasiyet ayarlarını DPI, ADS ve dürbün çarpanlarıyla 
 date: 2026-10-14
 updated: 2026-10-14
 category: PUBG
+product: pubg-steam-makro-paketi
 readingTime: 8
 tags:
   - PUBG hassasiyet ayarları

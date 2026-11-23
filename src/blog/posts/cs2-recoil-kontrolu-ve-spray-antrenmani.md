@@ -4,6 +4,7 @@ description: "CS2 recoil kontrolünü kısa seri, spray transfer ve hedef geçi�
 date: 2026-10-14
 updated: 2026-10-14
 category: CS2
+product: cs2-makro-paketi
 readingTime: 8
 tags:
   - CS2 recoil kontrolü

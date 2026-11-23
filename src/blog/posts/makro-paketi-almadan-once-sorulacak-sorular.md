@@ -54,4 +54,4 @@ Tanıtımda açıkça belirtilmeyen teslimat süresi veya birebir kurulum hizmet
 
 Ürün uyumluluğu ile oyunun kullanım kuralları ayrı konulardır. Bir dosyanın cihazınızda çalışması, ilgili oyunda izin verildiğini göstermez. Satın alma kararınızdan önce güncel oyun kurallarını kontrol edin.
 
-Bu kontrol listesini tamamladıktan sonra [Lina Macros paketlerini](/#paketler) karşılaştırabilirsiniz. Mouse tarafındaki ayrıntılar için [Bloody Mouse satın alma rehberimiz](/blog/bloody-mouse-makro-satin-alma-rehberi/) yardımcı olacaktır.
+Bu kontrol listesini tamamladıktan sonra [Lina Macros paketlerini](/#urunler) karşılaştırabilirsiniz. Mouse tarafındaki ayrıntılar için [Bloody Mouse satın alma rehberimiz](/blog/bloody-mouse-makro-satin-alma-rehberi/) yardımcı olacaktır.

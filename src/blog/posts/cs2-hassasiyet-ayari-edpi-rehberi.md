@@ -4,6 +4,7 @@ description: "CS2 hassasiyet ayarınızı DPI ve eDPI hesabıyla karşılaştır
 date: 2026-10-14
 updated: 2026-10-14
 category: CS2
+product: cs2-makro-paketi
 readingTime: 8
 tags:
   - CS2 hassasiyet ayarı

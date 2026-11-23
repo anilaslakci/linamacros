@@ -4,6 +4,7 @@ description: "Valorant crosshair ayarlarını görünürlük, hareket ve ateş h
 date: 2026-10-14
 updated: 2026-10-14
 category: Valorant
+product: valorant-makro-paketi
 readingTime: 8
 tags:
   - Valorant crosshair ayarları

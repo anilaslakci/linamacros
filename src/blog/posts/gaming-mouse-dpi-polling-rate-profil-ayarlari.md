@@ -4,6 +4,7 @@ description: "Gaming mouse DPI, polling rate ve uygulama profillerini doğru kur
 date: 2026-10-14
 updated: 2026-10-14
 category: Teknik Rehber
+product: ""
 readingTime: 8
 tags:
   - gaming mouse ayarları

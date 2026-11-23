@@ -1,0 +1,58 @@
+---
+permalink: "{{ product | productUrl }}index.html"
+---
+<main id="top" class="article-shell section-grid">
+  <div class="container article-container">
+    {% include "partials/breadcrumbs.njk" %}
+    <header class="article-header">
+      <h1>{{ product.name }}</h1>
+      <p class="article-lead">{{ product.description }}</p>
+    </header>
+    <div class="article-layout">
+      <div class="article-content">
+        <h2>Paket özellikleri</h2>
+        <ul>
+          <li>Kolay kurulum</li>
+          <li>Güncel ayar dosyaları</li>
+          <li>Kullanım rehberi</li>
+          <li>Güncelleme desteği</li>
+        </ul>
+
+        <h2>Nasıl çalışır?</h2>
+        <ol>
+          <li>Paketini seç</li>
+          <li>Shopier'den satın al</li>
+          <li>Kur ve kullan</li>
+        </ol>
+
+        <h2>Ödeme ve teslimat</h2>
+        <p>Ödeme işlemin doğrudan Shopier altyapısı üzerinden tamamlanır. Kart bilgileriniz Lina Macros tarafından işlenmez veya saklanmaz.</p>
+
+        <h2>Uyumluluk ve destek</h2>
+        <ul>
+          <li>Bloody Mouse uyumlu</li>
+          <li>Türkçe kurulum</li>
+          <li>Telegram destek</li>
+          <li>Uygun fiyat</li>
+        </ul>
+      </div>
+      <aside class="article-aside">
+        <section class="aside-card" aria-label="Satın alma ve destek">
+          <div class="price">
+            <strong>{{ product.price | tryPrice }}</strong>
+            {% if product.regularPrice %}<del>{{ product.regularPrice | tryPrice }}</del>{% endif %}
+          </div>
+          <a class="btn btn-primary full" href="{{ product.shopierUrl }}" data-shopier-product="{{ product.name }}" data-shopier-game="{{ product.game }}">Satın Al ↗</a>
+          <a class="text-link product-details-link" href="{{ site.telegramSupport }}" target="_blank" rel="noopener noreferrer">Telegram'dan Destek Al <span>↗</span></a>
+        </section>
+        {% set guides = collections.posts | productRelatedPosts(product) %}
+        {% if guides.length %}
+        <section class="aside-links product-guides">
+          <h2>İlgili rehberler</h2>
+          {% for guide in guides %}<a href="{{ guide.url }}">{{ guide.data.title }}</a>{% endfor %}
+        </section>
+        {% endif %}
+      </aside>
+    </div>
+  </div>
+</main>

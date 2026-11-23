@@ -25,11 +25,15 @@ content:
     fields:
       - name: id
         label: Ürün Kimliği
-        type: select
+        type: string
         required: true
         description: Doğrudan ürün bağlantısı için kullanılan sabit kimlik. Mevcut üründe değiştirmeyin.
-        options:
-          values: [product-pubg-steam, product-pubg-mobile, product-valorant, product-cs2]
+        pattern: "^product-[a-z0-9-]+$"
+      - name: slug
+        label: Kalıcı URL parçası
+        type: string
+        required: true
+        description: Kalıcı URL parçası. Mevcut üründe değiştirmeyin.
       - name: name
         label: Ürün adı
         type: string
@@ -154,6 +158,19 @@ content:
         required: true
         options:
           values: [PUBG, Valorant, CS2, Oyun Rehberi, Teknik Rehber]
+      - name: product
+        label: İlgili ürün paketi
+        type: select
+        required: false
+        description: Oyuna özel bir paket seçin veya boş bırakın.
+        options:
+          placeholder: Ürün seçilmedi
+          values:
+            - { name: "", label: Ürün seçilmedi }
+            - { name: pubg-steam-makro-paketi, label: PUBG Steam }
+            - { name: pubg-mobile-pc-makro-paketi, label: PUBG Mobile (PC) }
+            - { name: valorant-makro-paketi, label: Valorant }
+            - { name: cs2-makro-paketi, label: CS2 }
       - name: readingTime
         label: Tahmini okuma süresi
         type: number

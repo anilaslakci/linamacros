@@ -4,6 +4,7 @@ description: "Valorant hassasiyetinizi eDPI hesabı, 180 derece dönüş ve mikr
 date: 2026-10-14
 updated: 2026-10-14
 category: Valorant
+product: valorant-makro-paketi
 readingTime: 8
 tags:
   - Valorant hassasiyet ayarı

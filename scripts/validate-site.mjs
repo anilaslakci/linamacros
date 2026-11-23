@@ -1,6 +1,9 @@
 import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { getBuildTime, isPostPublished } from "../lib/publishing.mjs";
+import { isCampaignActive } from "../lib/campaign.mjs";
+import { activeProduct, activeProducts as filterActiveProducts, productUrl, tryPrice } from "../lib/products.mjs";
+import { isRulesGuide } from "../lib/article-links.mjs";
 import sharp from "sharp";
 
 const root = process.cwd();
@@ -64,6 +67,46 @@ function markdownBodyText(source) {
     .replace(/[#>*_`~|]/g, " ");
 }
 
+function linkUrls(html, canonical) {
+  return [...html.matchAll(/<(?:a|link)\b[^>]*\shref\s*=\s*(["'])(.*?)\1[^>]*>/gi)].map(([, , href]) => {
+    const target = href.replaceAll("&amp;", "&");
+    return { href, url: URL.canParse(target, canonical) ? new URL(target, canonical) : null };
+  });
+}
+
+function validateSchemaFields(value, relative, origin) {
+  if (!value || typeof value !== "object") return;
+  const types = [value["@type"]].flat();
+  if (types.some((type) => /(?:^|\/)(?:AggregateRating|Review)$/.test(type))) fail(`${relative}: yasak değerlendirme şeması bulundu.`);
+  for (const [key, field] of Object.entries(value)) {
+    if (key === "@id" && !(typeof field === "string" && (field === origin || field.startsWith(`${origin}/`)))) {
+      fail(`${relative}: JSON-LD @id site adresiyle başlamıyor: ${field}`);
+    }
+    if (["aggregateRating", "review", "ratingValue", "reviewCount"].includes(key)) fail(`${relative}: yasak JSON-LD alanı ${key}.`);
+    validateSchemaFields(field, relative, origin);
+  }
+}
+
+function validateBreadcrumb(schema, relative, canonical, siteUrl, sectionName, sectionPath, pageName) {
+  const expected = [["Ana Sayfa", `${siteUrl}/`], [sectionName, `${siteUrl}${sectionPath}`], [pageName, canonical]];
+  const items = schema?.itemListElement;
+  if (!Array.isArray(items) || items.length !== expected.length || !expected.every(([name, url], index) => {
+    const item = items[index];
+    return item?.["@type"] === "ListItem" && item.position === index + 1
+      && item.name === name && item.item?.["@id"] === url && item.item?.url === url;
+  })) {
+    fail(`${relative}: BreadcrumbList sayfa yoluyla eşleşmiyor.`);
+  }
+}
+
+const siteData = JSON.parse(await readFile(path.join(root, "src", "_data", "site.json"), "utf8"));
+if (siteData.url !== "https://linamacros.com.tr") fail("Merkezi site adresi https://linamacros.com.tr olmalı.");
+const siteHost = new URL(siteData.url).hostname;
+const productsData = JSON.parse(await readFile(path.join(root, "src", "_data", "products.json"), "utf8"));
+const activeProducts = filterActiveProducts(productsData);
+const productsByUrl = new Map(activeProducts.map((product) => [productUrl(product), product]));
+const faqsData = JSON.parse(await readFile(path.join(root, "src", "_data", "faqs.json"), "utf8"));
+
 const sourcePosts = (await readdir(postSource)).filter((name) => name.endsWith(".md"));
 if (sourcePosts.length === 0) fail("Blog kaynak klasöründe en az bir makale bulunmalı.");
 const buildTime = getBuildTime();
@@ -80,16 +123,28 @@ const postHtmlFiles = htmlFiles.filter((file) => file.includes(`${path.sep}blog$
 if (postHtmlFiles.length !== publishedSources.length) fail(`Derlemede ${publishedSources.length} yayınlanmış makale sayfası bekleniyordu, ${postHtmlFiles.length} bulundu.`);
 
 const expectedUrls = new Set(["https://linamacros.com.tr/", "https://linamacros.com.tr/blog/"]);
+const schemasByFile = new Map();
+const productTitles = new Set();
+const productDescriptions = new Set();
+const htmlByFile = new Map(await Promise.all(htmlFiles.map(async (file) => [file, await readFile(file, "utf8")])));
+const fragmentsByFile = new Map([...htmlByFile].map(([file, html]) => [
+  file, new Set([...html.matchAll(/<[a-z][^>]*\sid=["']([^"']+)["']/gi)].map(([, id]) => id))
+]));
+let jsonLdBlockCount = 0;
+let internalLinkCount = 0;
+let postPackageLinkCount = 0;
+let rulesGuideCount = 0;
 
 for (const file of htmlFiles) {
-  const html = await readFile(file, "utf8");
+  const html = htmlByFile.get(file);
   const relative = path.relative(dist, file).replaceAll("\\", "/");
   const urlPath = relative === "index.html" ? "/" : `/${relative.replace(/index\.html$/, "")}`;
-  const canonical = `https://linamacros.com.tr${urlPath}`;
+  const canonical = `${siteData.url}${urlPath}`;
   expectedUrls.add(canonical);
 
   if (!html.includes('<html lang="tr">')) fail(`${relative}: lang=tr eksik.`);
-  if (!html.includes(`<link rel="canonical" href="${canonical}"`)) fail(`${relative}: canonical yanlış veya eksik.`);
+  const canonicalTags = [...html.matchAll(/<link\b[^>]*\brel=["']canonical["'][^>]*>/gi)];
+  if (canonicalTags.length !== 1 || !canonicalTags[0][0].includes(`href="${canonical}"`)) fail(`${relative}: canonical yanlış, eksik veya tekrarlanmış.`);
   if (metaContent(html, "property", "og:url") !== canonical) fail(`${relative}: og:url canonical ile eşleşmiyor.`);
   if (!metaContent(html, "property", "og:title")) fail(`${relative}: og:title eksik.`);
   if (!metaContent(html, "property", "og:description")) fail(`${relative}: og:description eksik.`);
@@ -102,18 +157,76 @@ for (const file of htmlFiles) {
   if (html.includes("googletagmanager.com/gtag/js")) fail(`${relative}: GA4 etiketi rıza öncesinde statik olarak yüklenmemeli.`);
   if ((html.match(/class="site-header"/g) ?? []).length !== 1) fail(`${relative}: ortak sticky üst menü eksik veya tekrarlanmış.`);
 
-  const localLinks = [...html.matchAll(/href=["'](\/[^"'#?]*)(?:[?#][^"']*)?["']/g)].map((match) => match[1]);
-  for (const href of localLinks) {
-    const clean = decodeURIComponent(href);
-    const target = clean.endsWith("/")
-      ? path.join(dist, clean, "index.html")
-      : path.join(dist, clean);
-    if (!await exists(target)) fail(`${relative}: bozuk iç bağlantı ${href}`);
+  const schemas = new Map();
+  for (const [, block] of html.matchAll(/<script\b(?=[^>]*\stype\s*=\s*["']application\/ld\+json["'])[^>]*>([\s\S]*?)<\/script\s*>/gi)) {
+    jsonLdBlockCount++;
+    let schema;
+    try {
+      schema = JSON.parse(block);
+    } catch (error) {
+      fail(`${relative}: geçersiz JSON-LD: ${error.message}`);
+      continue;
+    }
+    validateSchemaFields(schema, relative, siteData.url);
+    if (schemas.has(schema?.["@type"])) fail(`${relative}: yinelenen JSON-LD türü ${schema["@type"]}.`);
+    schemas.set(schema?.["@type"], schema);
   }
+  schemasByFile.set(file, schemas);
+  if (schemas.get("WebSite")?.url !== `${siteData.url}/`) fail(`${relative}: geçerli WebSite JSON-LD bulunamadı.`);
+
+  if (urlPath === "/") {
+    const publishedFaqs = faqsData
+      .filter((faq) => faq.active === true && faq.question.trim() && faq.answer.trim())
+      .sort((a, b) => a.order - b.order);
+    const entities = schemas.get("FAQPage")?.mainEntity;
+    if (!Array.isArray(entities) || entities.length !== publishedFaqs.length || !publishedFaqs.every((faq, index) =>
+      entities[index]?.name === faq.question && entities[index]?.acceptedAnswer?.text === faq.answer
+    )) fail(`${relative}: FAQPage aktif S.S.S. kayıtlarıyla eşleşmiyor.`);
+  }
+
+  const product = productsByUrl.get(urlPath);
+  const productMarkup = schemas.get("Product");
+  if (product) {
+    const offer = productMarkup?.offers;
+    if (productMarkup?.url !== canonical || productMarkup.name !== product.name || productMarkup.description !== product.description
+      || productMarkup.sku !== product.id || productMarkup.brand?.name !== siteData.name || "image" in productMarkup) {
+      fail(`${relative}: Product JSON-LD ürün kaydıyla eşleşmiyor veya görsel içeriyor.`);
+    }
+    if (offer?.["@type"] !== "Offer" || typeof offer.price !== "number" || offer.price !== product.price
+      || offer.priceCurrency !== "TRY" || offer.availability !== "https://schema.org/InStock"
+      || offer.url !== canonical || offer.seller?.name !== siteData.name) {
+      fail(`${relative}: Offer JSON-LD fiyat, stok, satıcı veya canonical ile eşleşmiyor.`);
+    }
+    validateBreadcrumb(schemas.get("BreadcrumbList"), relative, canonical, siteData.url, "Ürünler", "/#urunler", product.name);
+    productTitles.add(metaContent(html, "property", "og:title"));
+    productDescriptions.add(metaContent(html, "property", "og:description"));
+  } else if (schemas.has("Product") || schemas.has("Offer")) {
+    fail(`${relative}: aktif ürün sayfası dışında ürün şeması bulundu.`);
+  }
+
+  for (const { href, url } of linkUrls(html, canonical)) {
+    if (!url) {
+      fail(`${relative}: geçersiz bağlantı ${href}`);
+      continue;
+    }
+    if (url.hostname !== siteHost) continue;
+    internalLinkCount++;
+    const clean = decodeURIComponent(url.pathname);
+    const target = path.join(dist, clean, clean.endsWith("/") ? "index.html" : "");
+    const resolved = htmlByFile.has(target) || path.extname(clean) ? target : path.join(target, "index.html");
+    if (!htmlByFile.has(resolved) && !await exists(resolved)) {
+      fail(`${relative}: bozuk iç bağlantı ${href}`);
+    } else if (url.hash && fragmentsByFile.has(resolved) && !fragmentsByFile.get(resolved).has(decodeURIComponent(url.hash.slice(1)))) {
+      fail(`${relative}: bulunamayan sayfa içi hedef ${href}`);
+    }
+  }
+}
+if (productTitles.size !== activeProducts.length || productDescriptions.size !== activeProducts.length) {
+  fail("Her aktif ürün sayfasının başlığı ve meta açıklaması benzersiz olmalı.");
 }
 
 for (const file of postHtmlFiles) {
-  const html = await readFile(file, "utf8");
+  const html = htmlByFile.get(file);
   const relative = path.relative(dist, file).replaceAll("\\", "/");
   const slug = relative.split("/").at(-2);
   const source = await readFile(path.join(postSource, `${slug}.md`), "utf8");
@@ -121,15 +234,41 @@ for (const file of postHtmlFiles) {
   const description = metaContent(html, "name", "description");
   if (description.length < 120 || description.length > 160) fail(`${relative}: meta description ${description.length} karakter.`);
   if (metaContent(html, "property", "og:type") !== "article") fail(`${relative}: og:type article değil.`);
-  const jsonBlocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)].map((match) => match[1]);
-  const posting = jsonBlocks.map((block) => {
-    try { return JSON.parse(block); } catch { return null; }
-  }).find((value) => value?.["@type"] === "BlogPosting");
+  const schemas = schemasByFile.get(file);
+  const posting = schemas.get("BlogPosting");
+  const canonical = `${siteData.url}/blog/${slug}/`;
   if (!posting) fail(`${relative}: geçerli BlogPosting JSON-LD bulunamadı.`);
   else {
-    for (const key of ["headline", "description", "datePublished", "dateModified", "mainEntityOfPage", "author", "publisher"]) {
+    for (const key of ["headline", "description", "datePublished", "dateModified", "mainEntityOfPage", "author", "publisher", "keywords"]) {
       if (!posting[key]) fail(`${relative}: JSON-LD ${key} eksik.`);
     }
+    if (posting.url !== canonical || posting.mainEntityOfPage?.["@id"] !== canonical) fail(`${relative}: BlogPosting canonical ile eşleşmiyor.`);
+  }
+  validateBreadcrumb(schemas.get("BreadcrumbList"), relative, canonical, siteData.url, "Blog", "/blog/", posting?.headline);
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1] ?? "";
+  const articleLinks = linkUrls(main, canonical).map(({ url }) => url).filter(Boolean);
+  const localArticleLinks = articleLinks.filter((url) => url.origin === siteData.url);
+  const productLinks = localArticleLinks.filter((url) => productsByUrl.has(url.pathname));
+  const generalLinks = localArticleLinks.filter((url) => url.pathname === "/" && url.hash === "#urunler");
+  const tags = posting?.keywords?.split(", ") ?? [];
+  const selectedSlug = source.match(/^product:[ \t]*["']?([a-z0-9-]+)["']?[ \t]*\r?$/m)?.[1];
+  const selectedProduct = activeProduct(productsData, selectedSlug);
+  if (isRulesGuide(tags)) {
+    rulesGuideCount++;
+    if (productLinks.length || generalLinks.length || articleLinks.some((url) => url.hostname === "www.shopier.com" || url.hostname === "shopier.com")) {
+      fail(`${relative}: kural odaklı yazıda satış çağrısı veya ürün bağlantısı var.`);
+    }
+    if (!linkUrls(html, canonical).some(({ href }) => href === "/#urunler")) fail(`${relative}: ortak ürün menüsü bağlantısı eksik.`);
+  } else {
+    postPackageLinkCount += productLinks.length + generalLinks.length;
+    if (!productLinks.length && !generalLinks.length) fail(`${relative}: ürün sayfasına veya /#urunler hedefine bağlantı yok.`);
+    const category = source.match(/^category:[ \t]*(.+)$/m)?.[1].trim();
+    const taggedGames = new Set(tags.map((tag) => /^(PUBG|Valorant|CS2)\b/i.exec(tag)?.[0].toLowerCase()).filter(Boolean));
+    const comparison = category === "Oyun Rehberi" && taggedGames.size > 1 && main.includes("<table>");
+    if ((!comparison && productLinks.length > 1) || new Set(productLinks.map((url) => url.pathname)).size !== productLinks.length || generalLinks.length > 1) {
+      fail(`${relative}: ürün bağlantısı veya genel CTA adedi sınırı aşıyor.`);
+    }
+    if (selectedProduct && !productLinks.some((url) => url.pathname === productUrl(selectedProduct))) fail(`${relative}: seçilen paket bağlantısı eksik.`);
   }
   const plainText = html.match(/<div class="article-content">([\s\S]*?)<\/div>/i)?.[1]
     .replace(/<[^>]+>/g, " ")
@@ -145,15 +284,14 @@ for (const file of postHtmlFiles) {
   }
 }
 
-const home = await readFile(path.join(dist, "index.html"), "utf8");
-const siteData = JSON.parse(await readFile(path.join(root, "src", "_data", "site.json"), "utf8"));
-const productsData = JSON.parse(await readFile(path.join(root, "src", "_data", "products.json"), "utf8"));
+const homePath = path.join(dist, "index.html");
+const home = htmlByFile.get(homePath);
+if (!fragmentsByFile.get(homePath)?.has("urunler")) fail("Ana sayfada /#urunler hedefi eksik.");
 const homeTemplate = await readFile(path.join(root, "src", "index.njk"), "utf8");
-const activeProducts = productsData.filter((product) => product.active === true);
 for (const product of activeProducts) {
   if (!home.includes(`href="${product.shopierUrl}"`)) fail(`Ana sayfada Shopier bağlantısı eksik: ${product.shopierUrl}`);
-  if (!home.includes(`<strong>${new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 2 }).format(product.price)} TL</strong>`)) fail(`${product.id}: merkezi satış fiyatı ana sayfaya yansımadı.`);
-  if (product.regularPrice && !home.includes(`<del>${new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 2 }).format(product.regularPrice)} TL</del>`)) fail(`${product.id}: merkezi indirimsiz fiyat ana sayfaya yansımadı.`);
+  if (!home.includes(`<strong>${tryPrice(product.price)}</strong>`)) fail(`${product.id}: merkezi satış fiyatı ana sayfaya yansımadı.`);
+  if (product.regularPrice && !home.includes(`<del>${tryPrice(product.regularPrice)}</del>`)) fail(`${product.id}: merkezi indirimsiz fiyat ana sayfaya yansımadı.`);
 }
 if ((home.match(/data-shopier-product=/g) ?? []).length !== activeProducts.length || (home.match(/data-shopier-game=/g) ?? []).length !== activeProducts.length) {
   fail("Aktif ürünlerin Shopier satın alma düğmelerinde ürün ve oyun ölçüm bilgileri eksik.");
@@ -163,11 +301,14 @@ for (const productId of productsData.map((product) => product.id)) {
   const actualCount = (home.match(new RegExp(`id="${productId}"`, "g")) ?? []).length;
   if (actualCount !== expectedCount) fail(`${productId}: ${expectedCount} kart bekleniyordu, ${actualCount} bulundu.`);
 }
-if ((home.match(/data-campaign(?:[ >])/g) ?? []).length !== activeProducts.length + 2 || (home.match(/class="product-campaign-tag"/g) ?? []).length !== activeProducts.length) {
-  fail("Aktif kampanyanın üst bandı, ürün duyurusu veya aktif ürün etiketleri eksik.");
+const campaignShouldRender = isCampaignActive(siteData.campaign, buildTime);
+const expectedCampaignElements = campaignShouldRender ? activeProducts.length + 2 : 0;
+const expectedCampaignTags = campaignShouldRender ? activeProducts.length : 0;
+if ((home.match(/data-campaign(?:[ >])/g) ?? []).length !== expectedCampaignElements || (home.match(/class="product-campaign-tag"/g) ?? []).length !== expectedCampaignTags) {
+  fail("Kampanya bandı, ürün duyurusu veya ürün etiketleri kampanya durumuyla eşleşmiyor.");
 }
 for (const placement of ["top_banner", "products_banner"]) {
-  if (!home.includes(`data-campaign-placement="${placement}"`)) fail(`Kampanya ölçüm konumu eksik: ${placement}`);
+  if (home.includes(`data-campaign-placement="${placement}"`) !== campaignShouldRender) fail(`Kampanya ölçüm konumu kampanya durumuyla eşleşmiyor: ${placement}`);
 }
 if (!home.includes('class="payment-card payment-card-link reveal" href="https://www.shopier.com/linamacros" target="_blank" rel="noopener noreferrer"')) {
   fail("Shopier bilgilendirme kartının tamamı güvenli, yeni sekmede açılan bağlantı değil.");
@@ -259,11 +400,14 @@ if (!analyticsScript.includes('document.createElement("script")') || !analyticsS
 }
 
 const sitemap = await readFile(path.join(dist, "sitemap.xml"), "utf8");
-const sitemapUrls = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]));
+const sitemapLocations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+const sitemapUrls = new Set(sitemapLocations);
+for (const product of activeProducts) expectedUrls.add(`${siteData.url}${productUrl(product)}`);
 for (const url of expectedUrls) {
   if (!sitemapUrls.has(url)) fail(`Sitemap URL eksik: ${url}`);
 }
-const expectedSitemapSize = publishedSources.length + 3;
+const expectedSitemapSize = publishedSources.length + activeProducts.length + 3;
+if (sitemapLocations.length !== sitemapUrls.size) fail("Sitemap içinde tekrarlanan URL var.");
 if (sitemapUrls.size !== expectedSitemapSize) fail(`Sitemap ${expectedSitemapSize} URL içermeli, ${sitemapUrls.size} içeriyor.`);
 
 const robots = await readFile(path.join(dist, "robots.txt"), "utf8");
@@ -305,4 +449,5 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Doğrulama başarılı: ${sourcePosts.length} kaynak makalenin ${publishedSources.length} adedi yayında; ${htmlFiles.length} HTML sayfası, ${expectedSitemapSize} sitemap URL'si ve tüm SEO/Shopier/GA4-rıza/favicon kontrolleri geçti.`);
+console.log(`Doğrulama başarılı: ${sourcePosts.length} kaynak makalenin ${publishedSources.length} adedi yayında; ${htmlFiles.length} HTML sayfası, ${expectedSitemapSize} sitemap URL'si, ${jsonLdBlockCount} JSON-LD bloğu ve tüm SEO/Shopier/GA4-rıza/favicon kontrolleri geçti.`);
+console.log(`İç bağlantılar: ${internalLinkCount} hedef, ${postPackageLinkCount} yazı içi paket/bölüm bağlantısı ve ${rulesGuideCount} satış çağrısız kural rehberi doğrulandı.`);

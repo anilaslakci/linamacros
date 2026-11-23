@@ -6,6 +6,7 @@ description: Valorant'ta ping düşükken yaşanan takılmaları inceleyin. Pake
 date: 2026-11-19
 updated: 2026-11-19
 category: Valorant
+product: valorant-makro-paketi
 readingTime: 4
 tags:
   - Valorant paket kaybı

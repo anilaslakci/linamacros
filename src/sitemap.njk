@@ -16,6 +16,11 @@ eleventyExcludeFromCollections: true
     <loc>{{ site.url }}/cerez-politikasi/</loc>
     <lastmod>2026-10-14</lastmod>
   </url>
+{% for product in products | activeProducts %}
+  <url>
+    <loc>{{ site.url }}{{ product | productUrl }}</loc>
+  </url>
+{% endfor %}
 {% for post in collections.posts %}
   <url>
     <loc>{{ site.url }}{{ post.url }}</loc>

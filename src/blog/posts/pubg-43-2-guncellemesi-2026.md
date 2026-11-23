@@ -6,6 +6,7 @@ description: PUBG 43.2 güncellemesinde neler değişti? Rondo, araç dengesi,
 date: 2026-10-22
 updated: 2026-10-22
 category: PUBG
+product: pubg-steam-makro-paketi
 readingTime: 4
 tags:
   - PUBG 43.2 güncellemesi
@@ -66,9 +67,7 @@ Lina Macros'un PUBG Steam paketi, farklı silahlar için hazırlanmış AMC/MGN 
 
 Makro kullanımının oyunun güncel kurallarıyla uyumunu değerlendirmek kullanıcı sorumluluğundadır.
 
-**PUBG Steam makro paketini incelemek için:**
-
-[PUBG Steam Makro Paketi](https://linamacros.com.tr/#product-pubg-steam)
+[PUBG Steam makro paketini incele](/urunler/pubg-steam-makro-paketi/)
 
 ## Sonuç
 
@@ -76,7 +75,7 @@ PUBG 43.2 güncellemesi yalnızca bir içerik güncellemesi değil. İletişim, 
 
 Güncelleme sonrası ayarları kontrol etmek, özellikle uzun süredir aynı DPI ve hassasiyet değerlerini kullanan oyuncular için faydalı olacaktır.
 
-**Lina Macros'taki tüm oyun paketlerini karşılaştırmak için [ürünler bölümünü](https://linamacros.com.tr/#products) ziyaret edebilirsiniz.**
+**Lina Macros'taki tüm oyun paketlerini karşılaştırmak için [ürünler bölümünü](/#urunler) ziyaret edebilirsiniz.**
 
 ### Kaynak
 

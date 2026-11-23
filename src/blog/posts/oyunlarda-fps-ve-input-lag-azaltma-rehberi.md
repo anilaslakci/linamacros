@@ -4,6 +4,7 @@ description: "Windows, ekran, oyun ve arka plan ayarlarını doğru sırada kont
 date: 2026-10-14
 updated: 2026-10-14
 category: Teknik Rehber
+product: ""
 readingTime: 9
 tags:
   - FPS artırma

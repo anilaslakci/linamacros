@@ -1,0 +1,11 @@
+{% set breadcrumbs = page.url | pageBreadcrumbs(title, isProductPage) %}
+<nav class="breadcrumbs" aria-label="Sayfa yolu">
+  {% for crumb in breadcrumbs %}
+    {% if not loop.first %}<span aria-hidden="true">/</span>{% endif %}
+    {% if loop.last %}
+    <span aria-current="page">{{ crumb.name }}</span>
+    {% else %}
+    <a href="{{ crumb.url }}">{{ crumb.name }}</a>
+    {% endif %}
+  {% endfor %}
+</nav>
